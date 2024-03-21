@@ -2,6 +2,7 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Header from './Components/Header'
 import { Container } from 'react-bootstrap'
+import Footer from './Components/Footer'
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Outlet/>
       </Container>
     </main>
+    <Footer/>
   </>
   )
 }
