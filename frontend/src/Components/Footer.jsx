@@ -1,13 +1,19 @@
 import React from 'react'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import '../main.css'
 
 const Footer = () => {
   return (
     <footer>
         <Container>
-            <p>Note, this project is not affiliated with Publix; this is a class project. Calorie and other nutitional values may not be
+            <Row>
+                <Col>
+                <div style={{position:"absolute", bottom: 0, textAlign: 'center', fontSize: 20, right: 0}}>
+                Note, this project is not affiliated with Publix; this is a class project. Calorie and other nutitional values may not be
                 perfectly accurate. Please consult a nutritional specialist for accurate information
-            </p>
+                </div>
+                </Col>
+            </Row>
         </Container>
     </footer>
   )
