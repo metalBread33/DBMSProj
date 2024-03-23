@@ -4,15 +4,23 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 //import screens
-import Home from './Screens/Home'
 import App from './App'
+import Home from './Screens/Home'
 import Login from './Screens/Login'
+import Sub from './Screens/Sub'
+import Individual from './Screens/Individual'
+import Favs from './Screens/Favs'
+import Admin from './Screens/Admin'
 
 const router = createBrowserRouter(
     createRoutesFromElements (
         <Route path='/' element={<App/>}>
             <Route index={true} path='/' element={<Home/>}/>
             <Route path='/login' element={<Login/>}/>
+            <Route path='/sub' element={<Sub/>}/>
+            <Route path='/item' element={<Individual/>}/>
+            <Route path='/favs' element={<Favs/>}/>
+            <Route path='/admin' element={<Admin/>}/>
         </Route>
     )
 )
