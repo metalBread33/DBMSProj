@@ -39,11 +39,12 @@ CREATE TABLE Sub_Kit(
     bh BOOLEAN,
     nutrition_info INT,
     FOREIGN KEY (nutrition_info) REFERENCES Nutrition
-)
+);
 
 CREATE TABLE User (
     email VARCHAR(255) PRIMARY KEY,
     userName VARCHAR(64),
     isAdmin BOOLEAN,
     password VARCHAR(255)
-)
+    --need to think of a way to store favorites. seperate table for subs, each attribute is a key?
+);
