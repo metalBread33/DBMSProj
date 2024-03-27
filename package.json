@@ -9,8 +9,10 @@
     "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "dev": "cd frontend && npm run dev",
-    "start": "node backend/server.js"
+    "client": "cd frontend && npm run dev",
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "name": "dbmsproj",
   "version": "1.0.0",
