@@ -4,7 +4,7 @@ const {Pool} = pg
 dotenv.config()
 
 const pool = new Pool({
-    user: "postgres",
+    user: process.env.PSQLNAME, 
     password: process.env.PSQLPWD,
     host: process.env.PSQLHOST,
     port: process.env.PSQLPORT,

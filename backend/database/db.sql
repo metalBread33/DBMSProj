@@ -1,7 +1,7 @@
 CREATE DATABASE dbmsProj;
 
 CREATE TABLE Nutrition(
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     cals INT,
     carbs REAL,
     fat REAL,
@@ -9,6 +9,18 @@ CREATE TABLE Nutrition(
     na INT,
     cholesterol INT
 );
+
+/*
+ask about this table
+CREATE TABLE FoodItems (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(64) NOT NULL,
+    nutrition_info SERIAL NOT NULL,
+    FOREIGN KEY (nutrition_info) REFERENCES Nutrition,
+    itemType int NOT NULL,
+    whole BOOLEAN, --for breads only, can be null
+    bh BOOLEAN, --for meats and cheeses, can be null
+); */
 
 CREATE TABLE Breads(
     id INT PRIMARY KEY,
