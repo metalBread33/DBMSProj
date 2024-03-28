@@ -1,62 +1,37 @@
 CREATE DATABASE dbmsProj;
 
-CREATE TABLE Nutrition(
-    id SERIAL PRIMARY KEY,
+CREATE TABLE items (
+    itemid INT PRIMARY KEY,
+    name VARCHAR(64) NOT NULL,
+    itemtype int NOT NULL,
     cals INT,
     carbs REAL,
     fat REAL,
     protein REAL,
     na INT,
-    cholesterol INT
+    cholesterol INT,
+    bh BOOLEAN 
 );
 
-/*
-ask about this table
-CREATE TABLE FoodItems (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(64) NOT NULL,
-    nutrition_info SERIAL NOT NULL,
-    FOREIGN KEY (nutrition_info) REFERENCES Nutrition,
-    itemType int NOT NULL,
-    whole BOOLEAN, --for breads only, can be null
-    bh BOOLEAN, --for meats and cheeses, can be null
-); */
+CREATE TABLE subs (
+    subid INT[] PRIMARY KEY,
+    subname VARCHAR(64),
+    whole BOOLEAN, 
+    breadid INT,
+    meatid INT,
+    cheeseid INT,
+    topid INT,
+    FOREIGN KEY (breadid) REFERENCES items, 
+    FOREIGN KEY (meatid) REFERENCES items,
+    FOREIGN KEY (cheeseid) REFERENCES items,
+    FOREIGN KEY (topid) REFERENCES items
+); 
 
-CREATE TABLE Breads(
-    id INT PRIMARY KEY,
-    name VARCHAR(64),
-    whole BOOLEAN,
-    nutrition_info INT,
-    FOREIGN KEY (nutrition_info) REFERENCES Nutrition
-);
-
-CREATE TABLE Toppings(
-    id INT PRIMARY KEY,
-    name VARCHAR(64),
-    nutrition_info INT,
-    FOREIGN KEY (nutrition_info) REFERENCES Nutrition
-);
-
-CREATE TABLE Cheese(
-    id INT PRIMARY KEY,
-    name VARCHAR(64),
-    bh BOOLEAN,
-    nutrition_info INT,
-    FOREIGN KEY (nutrition_info) REFERENCES Nutrition
-);
-
-CREATE TABLE Sub_Kit(
-    id INT PRIMARY KEY,
-    name VARCHAR(64),
-    bh BOOLEAN,
-    nutrition_info INT,
-    FOREIGN KEY (nutrition_info) REFERENCES Nutrition
-);
-
-CREATE TABLE User (
+CREATE TABLE user (
     email VARCHAR(255) PRIMARY KEY,
     userName VARCHAR(64),
-    isAdmin BOOLEAN,
-    password VARCHAR(255)
-    --need to think of a way to store favorites. seperate table for subs, each attribute is a key?
+    admin BOOLEAN,
+    password VARCHAR(255),
+    favs INT[],
+    FOREIGN KEY (favs) REFERENCES subs
 );
