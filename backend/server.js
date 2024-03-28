@@ -1,26 +1,77 @@
 import express from 'express'
 import pool from './database/data.js'
-import subkits from './database/temp.js';
 
-const Pool = pool
 const port = 5000;
 
 const app = express()
 
+//used to make sure api is up
 app.get('/', (req,res) => {
     res.send('API is running ...')
 })
 
-app.get('/api/individual', (req, res) => {
-    res.json(subkits)
+//get all items
+app.get('/api/individual', async (req, res) => {
+    try {
+        const query =  await pool.query("SELECT * FROM items")
+        res.json(query.rows)
+    } catch (err) {
+        console.error(err.message)
+    }
 })
 
-app.get('/api/individual/:id', (req, res) => {
-    const item = subkits.find((p) => p.id == req.params.id);
-    if(!item)
-         res.status(404).json({error: "item not found"})
-    else
-        res.json(item)
+//get singluar item
+app.get('/api/individual/:id', async (req, res) => {
+     try {
+        const {id} = req.params
+        const query = await pool.query("SELECT * FROM items WHERE itemid = $1", [id])
+        res.json(query.rows)
+    } catch (err) {
+        console.error(err.message)
+    }
 })
+
+//get breads
+app.get('/api/breads', async (req, res) => {
+    try {
+        const query = await pool.query("SELECT * FROM items WHERE itemtype = 4")
+        res.json(query.rows)
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
+//get toppings
+app.get('/api/toppings', async (req, res) => {
+    try {
+        const query = await pool.query("SELECT * FROM items WHERE itemtype = 3 ")
+        res.json(query.rows)
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
+//get cheese
+app.get('/api/cheese', async (req, res) => {
+    try {
+        //const query = await pool.query("SELECT * FROM items WHERE itemtype = 2")
+        //res.json(query.rows)
+        res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
+//get kits
+app.get('/api/kits', async (req, res) => {
+    try {
+        //const query = await pool.query("SELECT * FROM items WHERE itemtype = 1")
+        //res.json(query.rows)
+        res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
 
 app.listen(port, () => console.log(`Server running on port ${port}`))

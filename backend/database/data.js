@@ -8,7 +8,7 @@ const pool = new Pool({
     password: process.env.PSQLPWD,
     host: process.env.PSQLHOST,
     port: process.env.PSQLPORT,
-    database: "dbmsProj"
+    database: "dbmsproj"
 })
 
 export default pool
