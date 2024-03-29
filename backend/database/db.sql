@@ -24,10 +24,12 @@ CREATE TABLE subs (
     FOREIGN KEY (breadid) REFERENCES items, 
     FOREIGN KEY (meatid) REFERENCES items,
     FOREIGN KEY (cheeseid) REFERENCES items,
-    FOREIGN KEY (topid) REFERENCES items
+    FOREIGN KEY (topid) REFERENCES items,
+    doublemeat BOOLEAN,
+    doublecheese BOOLEAN
 ); 
 
-CREATE TABLE user (
+CREATE TABLE users (
     email VARCHAR(255) PRIMARY KEY,
     userName VARCHAR(64),
     admin BOOLEAN,

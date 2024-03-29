@@ -1,10 +1,13 @@
 import express from 'express'
 import pool from './database/data.js'
+import cors from 'cors'
+
 
 const port = 5000;
 
 const app = express()
 
+app.use(cors())
 //used to make sure api is up
 app.get('/', (req,res) => {
     res.send('API is running ...')

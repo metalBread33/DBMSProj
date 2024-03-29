@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
     "pg": "^8.11.3",
     "react-bootstrap": "^2.10.2",

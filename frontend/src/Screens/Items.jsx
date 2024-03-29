@@ -1,37 +1,51 @@
-import React from 'react'
-import { Button, Table } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import React, {useEffect, useState} from 'react'
+import { Table, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const Items = () => {
 
     const getItems = async () => {
-        console.log("hwllo ")
         try {
-            console.log("yo")
+          const response = await fetch('http://localhost:5000/api/individual')
+          const data = await response.json()
+
+          console.log(data)
+          setItems(data)
         } catch (error) {
             console.error(error.message)
         }
     }
 
+    const [items, setItems] = useState([])
+
+    useEffect(() => {
+      getItems()
+    }, [])
   return (
   <>
     <Table striped hover responsive className='table-lg'>
       <thead>
-        <th>Name</th>
-        <th>Calories</th>
-        <th>Carbs</th>
-        <th>Fat</th>
-        <th>Protein</th>
+        <tr>
+          <th>Name</th>
+          <th>Calories</th>
+          <th>Carbs</th>
+          <th>Fat</th>
+          <th>Protein</th>
+        </tr>
       </thead>
       {/* need to replace with data in db */}
       <tbody>
-        <td><Link to="/">Boar's Head Turkey</Link></td>
-        <td>100</td>
-        <td>0g</td>
-        <td>0g</td>
-        <td>20g</td>
-      </tbody>
+        {items.map((item) => (
+          <tr key={item.itemid}>
+            <td><Link style={{color: 'black'}} to='/'>{item.name}</Link></td>
+            <td>{item.cals} cals</td>
+            <td>{item.carbs} g</td>
+            <td>{item.fat} g</td>
+            <td>{item.protein} g</td>
+
+          </tr>
+        ))}
+              </tbody>
     </Table>
   </> 
   )
