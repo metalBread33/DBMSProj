@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import { Table, Button } from 'react-bootstrap'
+import { Table, Row, Col, InputGroup, Form} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+
 
 const Items = () => {
 
@@ -17,12 +18,27 @@ const Items = () => {
     }
 
     const [items, setItems] = useState([])
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
       getItems()
     }, [])
+
+    console.log(search)
   return (
-  <>
+<>
+    <Row>
+
+    <Col md={2}>
+      <Form>
+        <InputGroup className='my-3'>
+          <Form.Control placeholder="Search items"
+            onChange={(e) => setSearch(e.target.value)}/>
+        </InputGroup>
+        <hr></hr>
+      </Form>
+    </Col>
+    <Col md={10}>
     <Table striped hover responsive className='table-lg'>
       <thead>
         <tr>
@@ -35,7 +51,9 @@ const Items = () => {
       </thead>
       {/* need to replace with data in db */}
       <tbody>
-        {items.map((item) => (
+        {items.filter((item) => {
+          return search.toLowerCase() === '' ? item : item.name.toLowerCase().includes(search)
+        }).map((item) => (
           <tr key={item.itemid}>
             <td><Link style={{color: 'black'}} to='/'>{item.name}</Link></td>
             <td>{item.cals} cals</td>
@@ -47,7 +65,9 @@ const Items = () => {
         ))}
               </tbody>
     </Table>
-  </> 
+    </Col>
+    </Row>
+</>
   )
 }
 

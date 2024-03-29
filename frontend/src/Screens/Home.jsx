@@ -23,7 +23,7 @@ const Home = () => {
   }
   return (
     <>
-      <div style={{textAlign: 'center'}}>Welcome to the Unoffical Publix Deli Nutritional Calculator</div>
+      <h1 style={{textAlign: 'center'}}>Welcome to the Unoffical Publix Deli Nutritional Calculator</h1>
       <Col>
         <Row>
         <Button className='btn-success' onClick={ItemClick}>Individual Items</Button>
