@@ -46,8 +46,6 @@ VALUES
     (32, 'Bacon', 3, 120, 1, 10, 7, 330, 25, FALSE),
     (33, 'Guacamole', 3, 90, 5, 8, 1, 210, 0, FALSE),
     (34, 'Hummus', 3, 90, 3, 7, 2, 100, 0, FALSE),
-    (35, 'Double Meat', 3, NULL, NULL, NULL, NULL, NULL, NULL, FALSE),
-    (36, 'Double Cheese', 3, NULL, NULL, NULL, NULL, NULL, NULL, FALSE);
 
 --inserts options for cheese
     

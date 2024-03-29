@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import { Table, Row, Col, InputGroup, Form} from 'react-bootstrap'
+import { Table, Row, Col, InputGroup, Form, ToggleButton, FormCheck} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 
 const Items = () => {
 
+  //fetch items from database
     const getItems = async () => {
         try {
           const response = await fetch('http://localhost:5000/api/individual')
@@ -19,12 +20,13 @@ const Items = () => {
 
     const [items, setItems] = useState([])
     const [search, setSearch] = useState("")
+    const [bhOnly, setBhOnly] = useState(false)
+    console.log(bhOnly)
 
     useEffect(() => {
       getItems()
     }, [])
 
-    console.log(search)
   return (
 <>
     <Row>
@@ -36,6 +38,8 @@ const Items = () => {
             onChange={(e) => setSearch(e.target.value)}/>
         </InputGroup>
         <hr></hr>
+        <Form.Check label="Show Boar's Head Only"
+          onChange={(e) => setBhOnly(!bhOnly)}/>
       </Form>
     </Col>
     <Col md={10}>
@@ -53,7 +57,10 @@ const Items = () => {
       <tbody>
         {items.filter((item) => {
           return search.toLowerCase() === '' ? item : item.name.toLowerCase().includes(search)
-        }).map((item) => (
+        }).filter((item) => {
+          return ! bhOnly? item : item.bh
+        }
+        ).map((item) => (
           <tr key={item.itemid}>
             <td><Link style={{color: 'black'}} to='/'>{item.name}</Link></td>
             <td>{item.cals} cals</td>
