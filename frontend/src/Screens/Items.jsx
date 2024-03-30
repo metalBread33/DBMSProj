@@ -22,6 +22,7 @@ const Items = () => {
     const [bhOnly, setBhOnly] = useState(false)
     const [whole, setWhole] = useState(false)
     const [order, setOrder] = useState(0)
+    const [type, setType] = useState(0)
     const [page, setPage] = useState(1)
     const itemsPerPage = 10;
     const lastItem = page * itemsPerPage;
@@ -57,6 +58,10 @@ const Items = () => {
       setOrder(selected) //refreshes state at the ends
     }
 
+    const itemType = (e) => {
+      setType(e.target.value)
+    }
+
   return (
 <>
     <Row>
@@ -69,9 +74,9 @@ const Items = () => {
         </InputGroup>
         <hr></hr>
         <Form.Check label="Show Boar's Head Only"
-          onChange={(e) => setBhOnly(!bhOnly)}/>
+          onChange={() => setBhOnly(!bhOnly)}/>
         <Form.Check label="Show Whole Nutrition"
-          onChange={(e) => setWhole(!whole) }
+          onChange={() => setWhole(!whole) }
           />
         <hr/> 
         <p>Sort by</p>
@@ -86,6 +91,16 @@ const Items = () => {
           <option value={6}>Highest Fat First</option>
           <option value={7}>Lowest Protein First</option>
           <option value={8}>Highest Protein First</option>
+        </Form.Select>
+        <hr/>
+        <p>Select item type</p>
+        <Form.Select onChange={itemType}>
+          <option value={0}>All</option>
+          <option value={1}>Sub Kits</option>
+          <option value={2}>Cheeses</option>
+          <option value={3}>Toppings</option>
+          <option value={4}>Breads</option>
+
         </Form.Select>
 
       </Form>
@@ -108,7 +123,7 @@ const Items = () => {
         }).filter((item) => {
           return ! bhOnly? item : item.bh
         }
-        ).map((item) => (
+        ).filter((item => {return type === 0 ? item : item.itemtype == type })).map((item) => (
           <tr key={item.itemid}>
             <td><Link style={{color: 'black'}} to={`/item/${item.itemid}`}>{item.name}</Link></td>
             <td>{whole ? item.cals : item.cals /2} cals</td>
