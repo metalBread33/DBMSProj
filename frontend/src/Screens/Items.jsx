@@ -110,7 +110,7 @@ const Items = () => {
         }
         ).map((item) => (
           <tr key={item.itemid}>
-            <td><Link style={{color: 'black'}} to='/'>{item.name}</Link></td>
+            <td><Link style={{color: 'black'}} to={`/item/${item.itemid}`}>{item.name}</Link></td>
             <td>{whole ? item.cals : item.cals /2} cals</td>
             <td>{whole ? item.carbs : item.carbs /2} g</td>
             <td>{whole ? item.fat : item.fat /2 } g</td>
