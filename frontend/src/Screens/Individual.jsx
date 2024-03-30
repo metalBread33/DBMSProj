@@ -27,11 +27,21 @@ const getItem = async() => {
   return (
     <div>
       <Row>
-        <Col md={6}>
+        <Col md={8}>
+          {item.cals===0 ? 
+            <h2 style={{textAlign: 'center', bottom: 0, top: 15 }}>This item is calorie free</h2> : 
           <PieChart/>
+         }
         </Col>
-        <Col md={6}>
-          <p>{item.name}</p>
+        <Col md={4}>
+          <h2>{item.name}</h2>
+          <h3>{item.cals} Calories</h3>
+          <h3>{item.carbs}g of Carbs</h3>
+          <h3>{item.fat}g of Fat</h3>
+          <h3>{item.protein}g of Protein</h3>
+          <h3>{item.na}mg of Sodium</h3>
+          <h3>{item.cholesterol}mg of Cholesterol</h3>
+
         </Col>
       </Row>
     </div>
