@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { Table, Row, Col, InputGroup, Form, ToggleButton, FormCheck} from 'react-bootstrap'
+import { Table, Row, Col, InputGroup, Form} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 
@@ -21,7 +21,7 @@ const Items = () => {
     const [items, setItems] = useState([])
     const [search, setSearch] = useState("")
     const [bhOnly, setBhOnly] = useState(false)
-    console.log(bhOnly)
+    const [whole, setWhole] = useState(false)
 
     useEffect(() => {
       getItems()
@@ -31,15 +31,19 @@ const Items = () => {
 <>
     <Row>
 
-    <Col md={2}>
+    <Col lg={2}>
       <Form>
-        <InputGroup className='my-3'>
+        <InputGroup>
           <Form.Control placeholder="Search items"
             onChange={(e) => setSearch(e.target.value)}/>
         </InputGroup>
         <hr></hr>
         <Form.Check label="Show Boar's Head Only"
           onChange={(e) => setBhOnly(!bhOnly)}/>
+        <Form.Check label="Show Whole Nutrition"
+          onChange={(e) => setWhole(!whole) }
+          />
+        <hr/> 
       </Form>
     </Col>
     <Col md={10}>
@@ -63,10 +67,10 @@ const Items = () => {
         ).map((item) => (
           <tr key={item.itemid}>
             <td><Link style={{color: 'black'}} to='/'>{item.name}</Link></td>
-            <td>{item.cals} cals</td>
-            <td>{item.carbs} g</td>
-            <td>{item.fat} g</td>
-            <td>{item.protein} g</td>
+            <td>{whole ? item.cals : item.cals /2} cals</td>
+            <td>{whole ? item.carbs : item.carbs /2} g</td>
+            <td>{whole ? item.fat : item.fat /2 } g</td>
+            <td>{whole ? item.protein : item.protein / 2} g</td>
 
           </tr>
         ))}
