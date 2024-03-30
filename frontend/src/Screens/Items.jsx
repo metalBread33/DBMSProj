@@ -11,7 +11,7 @@ const Items = () => {
           const response = await fetch('http://localhost:5000/api/individual')
           const data = await response.json()
 
-          setItems(data.slice(firstItem, lastItem))
+          setItems(data)
         } catch (error) {
             console.error(error.message)
         }
@@ -23,10 +23,6 @@ const Items = () => {
     const [whole, setWhole] = useState(false)
     const [order, setOrder] = useState(0)
     const [type, setType] = useState(0)
-    const [page, setPage] = useState(1)
-    const itemsPerPage = 10;
-    const lastItem = page * itemsPerPage;
-    const firstItem = lastItem - itemsPerPage
 
 
 
@@ -123,7 +119,8 @@ const Items = () => {
         }).filter((item) => {
           return ! bhOnly? item : item.bh
         }
-        ).filter((item => {return type === 0 ? item : item.itemtype == type })).map((item) => (
+        ).filter((item) => {return type == 0 ? item : item.itemtype == type }
+          ).map((item) => (
           <tr key={item.itemid}>
             <td><Link style={{color: 'black'}} to={`/item/${item.itemid}`}>{item.name}</Link></td>
             <td>{whole ? item.cals : item.cals /2} cals</td>
