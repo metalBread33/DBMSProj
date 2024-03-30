@@ -22,10 +22,36 @@ const Items = () => {
     const [search, setSearch] = useState("")
     const [bhOnly, setBhOnly] = useState(false)
     const [whole, setWhole] = useState(false)
+    const [order, setOrder] = useState(0)
+
 
     useEffect(() => {
       getItems()
     }, [])
+
+    const sortData = (e) => {
+      const selected = e.target.value  //so i don't have to write e... over and over
+      if(selected == 0)
+        items.sort((a,b) => a.itemid - b.itemid)
+      if(selected == 1)
+        items.sort((a,b) => a.cals - b.cals)
+      if(selected == 2)
+              items.sort((a,b) => b.cals - a.cals)
+      if(selected == 3)
+              items.sort((a,b) => a.carbs - b.carbs)
+      if(selected == 4)
+              items.sort((a,b) => b.carbs - b.carbs)
+      if(selected == 5)
+              items.sort((a,b) => a.fat - b.fat)
+      if(selected == 6)
+              items.sort((a,b) => b.fat - a.fat)
+      if(selected == 7)
+              items.sort((a,b) => a.protein - b.protein)
+      if(selected == 8)
+              items.sort((a,b) => b.protein - a.protein)
+ 
+      setOrder(selected) //refreshes state at the ends
+    }
 
   return (
 <>
@@ -44,6 +70,20 @@ const Items = () => {
           onChange={(e) => setWhole(!whole) }
           />
         <hr/> 
+        <p>Sort by</p>
+        <Form.Select defaultValue="Sort by"
+          onChange={sortData}>
+          <option value={0}>Default</option>
+          <option value={1}>Lowest Calorie First</option>
+          <option value={2}>Highest Calorie First</option>
+          <option value={3}>Lowest Carbs First</option>
+          <option value={4}>Highest Carbs First</option>
+          <option value={5}>Lowest Fat First</option>
+          <option value={6}>Highest Fat First</option>
+          <option value={7}>Lowest Protein First</option>
+          <option value={8}>Highest Protein First</option>
+        </Form.Select>
+
       </Form>
     </Col>
     <Col md={10}>
