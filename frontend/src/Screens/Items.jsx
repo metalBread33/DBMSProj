@@ -23,6 +23,10 @@ const Items = () => {
     const [whole, setWhole] = useState(false)
     const [order, setOrder] = useState(0)
     const [type, setType] = useState(0)
+    const [page, setPage] = useState(1)
+    const itemsPerPage = 10;
+    const lastItem = page * itemsPerPage;
+    const firstItem = lastItem - itemsPerPage
 
 
 
@@ -120,7 +124,8 @@ const Items = () => {
           return ! bhOnly? item : item.bh
         }
         ).filter((item) => {return type == 0 ? item : item.itemtype == type }
-          ).map((item) => (
+          ).slice(firstItem, lastItem)
+          .map((item) => (
           <tr key={item.itemid}>
             <td><Link style={{color: 'black'}} to={`/item/${item.itemid}`}>{item.name}</Link></td>
             <td>{whole ? item.cals : item.cals /2} cals</td>
