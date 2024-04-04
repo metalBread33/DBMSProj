@@ -48,7 +48,25 @@ VALUES
     (34, 'Hummus', 3, 90, 3, 7, 2, 100, 0, FALSE),
 
 --inserts options for cheese
+INSERT INTO items (itemid, name, itemtype, cals, carbs, fat, protein, na, cholesterol, bh)
+VALUES
+    (35, 'Yellow American Cheese', 2, 170, 2, 14, 9, 550, 30, FALSE ),
+    (36, 'White American Cheese', 2, 170, 2, 14, 9, 550, 30, FALSE ),
+    (37, 'Swiss Cheese', 2, 150, 2, 12, 12, 30, 40, FALSE),
+    (38, 'Cheddar', 2, 170, 1, 15, 11, 290, 30, FALSE ),
+    (39, 'Munster', 2, 170, 1, 14, 11, 280, 45, FALSE),
+    (40, 'Pepper Jack', 2, 150, 2, 12, 11, 280, 45, FALSE),
+    (41, 'Provolone', 2, 150, 1, 11, 11, 380, 30, FALSE);
     
 --inserts options for boar's head sub kits
+INSERT INTO items (itemid, name, itemtype, cals, carbs, fat, protein, na, cholesterol, bh)
+VALUES
+    (100, 'Boar''s Head Turkey', 1, 180, 2, 3, 38, 1100, 60, TRUE),
+    (101, 'Boar''s Head Ultimate', 1, 200, 4, 5, 38, 1000, 80, TRUE),
+    (102, 'Boar''s Head Italian', 1, 360, 1, 24, 32, 1920, 120, TRUE),
+    (103, 'Boar''s Head Ham', 1, 180, 6, 4, 30, 1640, 90, TRUE),
+    (104, 'Boar''s Head Roast Beef', 1, 280, 2, 9, 46, 240, 110, TRUE),
+    (115, 'Boar''s Head Deluxe', 1, 400, 2, 30, 30, 1960, 110, TRUE);
+
 
 --inserts options for publix kits
