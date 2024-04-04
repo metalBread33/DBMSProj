@@ -7,6 +7,8 @@ To use db, open psql shell
     \c <table> moves into a table
 Copy sql cmds from db.sql into shell
 
+To have a ' in a string in sql, use 2 of them (that's stupid but whatever)
+
 
 Resources used
     https://www.w3schools.com/sql/sql_datatypes.asp
