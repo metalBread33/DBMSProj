@@ -70,3 +70,7 @@ VALUES
 
 
 --inserts options for publix kits
+INSERT INTO items (itemid, name, itemtype, cals, carbs, fat, protein, na, cholesterol, bh)
+VALUES
+    (200, 'Hot Honey Chicken Tender Sub', 1, 1090, 75, 64, 49, 1760, 160, FALSE),
+    (201, 'Chicken Bacon Ranch Tender Sub', 1, 1750, 56, 127, 97, 2760, 305, FALSE);
