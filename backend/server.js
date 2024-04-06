@@ -57,9 +57,9 @@ app.get('/api/toppings', async (req, res) => {
 //get cheese
 app.get('/api/cheese', async (req, res) => {
     try {
-        //const query = await pool.query("SELECT * FROM items WHERE itemtype = 2")
-        //res.json(query.rows)
-        res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
+        const query = await pool.query("SELECT * FROM items WHERE itemtype = 2")
+        res.json(query.rows)
+        //res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
     } catch (err) {
         console.log(err.message)
     }
@@ -68,9 +68,9 @@ app.get('/api/cheese', async (req, res) => {
 //get kits
 app.get('/api/kits', async (req, res) => {
     try {
-        //const query = await pool.query("SELECT * FROM items WHERE itemtype = 1")
-        //res.json(query.rows)
-        res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
+        const query = await pool.query("SELECT * FROM items WHERE itemtype = 1")
+        res.json(query.rows)
+        //res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
     } catch (err) {
         console.log(err.message)
     }
