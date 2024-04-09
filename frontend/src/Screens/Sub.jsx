@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import PieChart from "../Components/PieChart"
-import {Row, Col, Button} from "react-bootstrap"
+import {Row, Col, Button, Form} from "react-bootstrap"
 
 const Sub = () => {
     const [toppings, setToppings] = useState([])
     const [kits, setKits] = useState([])
     const [cheeses, setCheeses] = useState([])
     const [breads, setBreads] = useState([])
+    
 
     const getToppings = async () => {
       try {
@@ -24,7 +25,7 @@ const Sub = () => {
           const response = await fetch('http://localhost:5000/api/cheese')
           const data = await response.json()
 
-          setCheese(data)
+          setCheeses(data)
         } catch (error) {
             console.error(error.message)
         } 
@@ -53,24 +54,48 @@ const Sub = () => {
         } 
       }
 
-    const useEffect = () => {
+     useEffect (() => {
       getToppings()
       getBreads()
       getCheeses()
       getKits()
-    }
+    }, [])
   return (
     <div>
       <Row>
         <Col style={{textAlign: 'left'}}>
-          <h2>Select your choice of bread</h2>
+          <Form>
+            <h2>Select your choice of bread</h2>
+            <Form.Select placeholder={" "}>
+              {breads.map((bread) => (
+                <option>{bread.name}</option>
+              ))}
+            </Form.Select>          
 
-          <h2>Select your choice of cheese</h2>
+            <h2>Select your choice of cheese</h2>
+            <Form.Select>
+              {cheeses.map((cheese) => (
+                <option>{cheese.name}</option>
+              ))}
+            </Form.Select>
 
-          <h2>Select your desired sandwich</h2>
+            <h2>Select your desired sandwich</h2>
+            <Form.Select>
+              {kits.map((kit) => (
+                <option>{kit.name}</option>
+              ))}
+            </Form.Select>
 
-          <h2>Select your toppings</h2>
-        </Col>
+              <h2>Select your toppings</h2>
+              {
+                toppings.map(top => {return <Form.Check label={top.name}></Form.Check>})
+              }
+
+            <h2>Extras</h2>
+            <Form.Check label='Double Meat'></Form.Check>
+            <Form.Check label='Double Cheese'></Form.Check>
+          </Form>
+       </Col>
 
         <Col md={3}>
           <PieChart/>
