@@ -9,11 +9,11 @@ const Sub = () => {
     const [breads, setBreads] = useState([])
     const [selectedBread, setSelectedBread] = useState({})
     const [totalCals, setTotalCals] = useState(0)
-    let totalCarbs = 0
-    let totalFat = 0
-    let totalProtein = 0
-    let totalNa = 0
-    let totalCholes = 0
+    const [totalCarbs, setTotalCarbs] = useState(0)
+    const [totalFat, setTotalFat] = useState(0)
+    const [totalProtein, setTotalProtein] = useState(0)
+    const [totalNa, setTotalNa] = useState(0)
+    const [totalCholes, setTotalCholes] = useState(0)
 
     const fetchData = async () => {
       try {
@@ -51,6 +51,11 @@ const Sub = () => {
 
     const updateTotals = () => {
       setTotalCals(selectedBread.cals)
+      setTotalCarbs(selectedBread.carbs)
+      setTotalFat(selectedBread.fat)
+      setTotalProtein(selectedBread.protein)
+      setTotalNa(selectedBread.na)
+      setTotalCholes(selectedBread.cholesterol)
     }
 
   return (
