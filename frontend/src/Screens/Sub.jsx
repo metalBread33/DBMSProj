@@ -7,9 +7,8 @@ const Sub = () => {
     const [kits, setKits] = useState([])
     const [cheeses, setCheeses] = useState([])
     const [breads, setBreads] = useState([])
-    //const [selectedBread, setSelectedBread] = useState({})
-    let topLength = 0
-    let totalCals = 0;
+    const [selectedBread, setSelectedBread] = useState({})
+    const [totalCals, setTotalCals] = useState(0)
     let totalCarbs = 0
     let totalFat = 0
     let totalProtein = 0
@@ -36,25 +35,24 @@ const Sub = () => {
       updateTotals()
     }, [])
 
+    useEffect(() => {
+      updateTotals()
+    }, [selectedBread])
+
     const updateBread = async (e) => {
-      //console.log(e)
       try {
         const response = await fetch(`http://localhost:5000/api/${e}`)
         const item = await response.json()
-        //setSelectedBread(item)
-        //console.log(item);
+        setSelectedBread(item[0])
       } catch (error) {
-        
+        console.log(error); 
       }
     }
 
     const updateTotals = () => {
-     // totalCals = selectedBread.cals
-     // console.log(totalCals)
-      //console.log(selectedBread.cals)
+      setTotalCals(selectedBread.cals)
     }
 
-    //totalCals = selectedBread.cals
   return (
     <div>
       <Row>
@@ -62,7 +60,7 @@ const Sub = () => {
           <Form>
             <h2>Select your choice of bread</h2>
             <Form.Select onChange={(e)=> {updateBread(e.target.value); 
-              updateTotals(totalCals, selectedBread)
+             updateTotals() 
             }}>
               {breads.map((bread) => (
                 <option>{bread.name}</option>
