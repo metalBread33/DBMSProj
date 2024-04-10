@@ -76,5 +76,16 @@ app.get('/api/kits', async (req, res) => {
     }
 })
 
+//get item by name
+app.get('/api/:name', async (req, res) => {
+    try {
+        const {name} = req.params
+        const query = await pool.query("SELECT * FROM items WHERE name = $1", [name])
+        res.json(query.rows)
+    } catch (err) {
+        console.log(err.message)
+    }
+})
+
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
