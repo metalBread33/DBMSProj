@@ -8,6 +8,8 @@ const Sub = () => {
     const [cheeses, setCheeses] = useState([])
     const [breads, setBreads] = useState([])
     const [selectedBread, setSelectedBread] = useState({})
+    const [selectedCheese, setSelectedCheese] = useState({})
+    const [selectedKit, setSelectedKit] = useState({})
     const [totalCals, setTotalCals] = useState(0)
     const [totalCarbs, setTotalCarbs] = useState(0)
     const [totalFat, setTotalFat] = useState(0)
@@ -39,18 +41,26 @@ const Sub = () => {
       updateTotals()
     }, [selectedBread])
 
-    const updateBread = async (e) => {
+    const updateItem = async (e) => {
       try {
         const response = await fetch(`http://localhost:5000/api/${e}`)
-        const item = await response.json()
-        setSelectedBread(item[0])
+        const data  = await response.json()
+        const item = data[0]
+        if (item.itemtype === 4)
+          setSelectedBread(item)
+        if (item.itemtype === 2)
+          setSelectedCheese(item)
+        if (item.itemtype === 1)
+          setSelectedKit(item)
       } catch (error) {
         console.log(error); 
       }
     }
 
     const updateTotals = () => {
-      setTotalCals(selectedBread.cals)
+      const cals = selectedBread.cals  + selectedCheese.cals //i should be able to just use this expression 
+        //but god hates me ig
+      setTotalCals(cals)
       setTotalCarbs(selectedBread.carbs)
       setTotalFat(selectedBread.fat)
       setTotalProtein(selectedBread.protein)
@@ -64,7 +74,7 @@ const Sub = () => {
         <Col md={6}style={{textAlign: 'left'}}>
           <Form>
             <h2>Select your choice of bread</h2>
-            <Form.Select onChange={(e)=> {updateBread(e.target.value); 
+            <Form.Select onChange={(e)=> {updateItem(e.target.value); 
              updateTotals() 
             }}>
               {breads.map((bread) => (
@@ -73,7 +83,8 @@ const Sub = () => {
             </Form.Select>          
 
             <h2>Select your choice of cheese</h2>
-            <Form.Select>
+            <Form.Select onChange={(e) => {updateItem(e.target.value);
+            updateTotals()}}>
               {cheeses.map((cheese) => (
                 <option>{cheese.name}</option>
               ))}
