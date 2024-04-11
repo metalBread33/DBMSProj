@@ -56,7 +56,9 @@ VALUES
     (38, 'Cheddar', 2, 170, 1, 15, 11, 290, 30, FALSE ),
     (39, 'Munster', 2, 170, 1, 14, 11, 280, 45, FALSE),
     (40, 'Pepper Jack', 2, 150, 2, 12, 11, 280, 45, FALSE),
-    (41, 'Provolone', 2, 150, 1, 11, 11, 380, 30, FALSE);
+    (41, 'Provolone', 2, 150, 1, 11, 11, 380, 30, FALSE),
+    (42, 'No Cheese', 2, 0, 0, 0, 0, 0, 0, FALSE);
+
     
 --inserts options for boar's head sub kits
 INSERT INTO items (itemid, name, itemtype, cals, carbs, fat, protein, na, cholesterol, bh)

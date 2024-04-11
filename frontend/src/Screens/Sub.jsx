@@ -64,12 +64,13 @@ const Sub = () => {
       const protein = selectedBread.protein + selectedCheese.protein + selectedKit.protein
       const sodium = selectedBread.na + selectedCheese.na + selectedKit.na
       const cholesterol = selectedBread.cholesterol + selectedCheese.cholesterol + selectedKit.cholesterol
-      setTotalCals(cals)
-      setTotalCarbs(carbs)
-      setTotalFat(fat)
-      setTotalProtein(protein)
-      setTotalNa(sodium)
-      setTotalCholes(cholesterol)
+
+      isNaN(cals) ? setTotalCals(0) : setTotalCals(cals) 
+      isNaN(carbs) ? setTotalCarbs(0) : setTotalCarbs(carbs)
+      isNaN(fat) ? setTotalFat(0) : setTotalFat(fat)
+      isNaN(protein) ? setTotalProtein(0) : setTotalProtein(protein)
+      isNaN(sodium) ? setTotalNa(0) : setTotalNa(sodium)
+      isNaN(cholesterol) ? setTotalCholes(0) : setTotalCholes(cholesterol)
     }
 
   return (
@@ -91,6 +92,7 @@ const Sub = () => {
             <Form.Select onChange={(e) => {updateItem(e.target.value);
             updateTotals()}}>
               <option></option>
+              <option>No Cheese</option>
               {cheeses.map((cheese) => (
                 <option>{cheese.name}</option>
               ))}
