@@ -47,7 +47,7 @@ app.get('/api/breads', async (req, res) => {
 //get toppings
 app.get('/api/toppings', async (req, res) => {
     try {
-        const query = await pool.query("SELECT * FROM items WHERE itemtype = 3 ")
+        const query = await pool.query("SELECT * FROM items WHERE itemtype = 3 ORDER BY itemid")
         res.json(query.rows)
     } catch (err) {
         console.log(err.message)

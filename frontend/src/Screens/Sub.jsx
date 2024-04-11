@@ -108,9 +108,11 @@ const Sub = () => {
             </Form.Select>
 
               <h2>Select your toppings</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
               {
-                toppings.map(top => {return <Form.Check label={top.name}></Form.Check>})
+                toppings.map(top => <Form.Check key={top.id} label={top.name} />)
               }
+              </div>
 
             <h2>Extras</h2>
             <Form.Check label='Double Meat'></Form.Check>
