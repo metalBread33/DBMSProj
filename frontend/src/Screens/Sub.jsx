@@ -39,7 +39,7 @@ const Sub = () => {
 
     useEffect(() => {
       updateTotals()
-    }, [selectedBread])
+    }, [selectedBread, selectedCheese, selectedKit])
 
     const updateItem = async (e) => {
       try {
@@ -58,14 +58,18 @@ const Sub = () => {
     }
 
     const updateTotals = () => {
-      const cals = selectedBread.cals  + selectedCheese.cals //i should be able to just use this expression 
-        //but god hates me ig
+      const cals = selectedBread.cals + selectedCheese.cals + selectedKit.cals
+      const carbs = selectedBread.carbs + selectedCheese.carbs + selectedKit.carbs
+      const fat = selectedBread.fat + selectedCheese.fat + selectedKit.fat
+      const protein = selectedBread.protein + selectedCheese.protein + selectedKit.protein
+      const sodium = selectedBread.na + selectedCheese.na + selectedKit.na
+      const cholesterol = selectedBread.cholesterol + selectedCheese.cholesterol + selectedKit.cholesterol
       setTotalCals(cals)
-      setTotalCarbs(selectedBread.carbs)
-      setTotalFat(selectedBread.fat)
-      setTotalProtein(selectedBread.protein)
-      setTotalNa(selectedBread.na)
-      setTotalCholes(selectedBread.cholesterol)
+      setTotalCarbs(carbs)
+      setTotalFat(fat)
+      setTotalProtein(protein)
+      setTotalNa(sodium)
+      setTotalCholes(cholesterol)
     }
 
   return (
@@ -77,6 +81,7 @@ const Sub = () => {
             <Form.Select onChange={(e)=> {updateItem(e.target.value); 
              updateTotals() 
             }}>
+              <option></option>
               {breads.map((bread) => (
                 <option>{bread.name}</option>
               ))}
@@ -85,13 +90,16 @@ const Sub = () => {
             <h2>Select your choice of cheese</h2>
             <Form.Select onChange={(e) => {updateItem(e.target.value);
             updateTotals()}}>
+              <option></option>
               {cheeses.map((cheese) => (
                 <option>{cheese.name}</option>
               ))}
             </Form.Select>
 
             <h2>Select your desired sandwich</h2>
-            <Form.Select>
+            <Form.Select onChange={(e) => {updateItem(e.target.value);
+            updateTotals()}}>
+              <option></option>
               {kits.map((kit) => (
                 <option>{kit.name}</option>
               ))}
