@@ -84,7 +84,7 @@ const Sub = () => {
             }}>
               <option></option>
               {breads.map((bread) => (
-                <option>{bread.name}</option>
+                <option key={bread.itemid}>{bread.name}</option>
               ))}
             </Form.Select>          
 
@@ -92,9 +92,8 @@ const Sub = () => {
             <Form.Select onChange={(e) => {updateItem(e.target.value);
             updateTotals()}}>
               <option></option>
-              <option>No Cheese</option>
               {cheeses.map((cheese) => (
-                <option>{cheese.name}</option>
+                <option key={cheese.itemid}>{cheese.name}</option>
               ))}
             </Form.Select>
 
@@ -103,14 +102,14 @@ const Sub = () => {
             updateTotals()}}>
               <option></option>
               {kits.map((kit) => (
-                <option>{kit.name}</option>
+                <option key={kit.itemid}>{kit.name}</option>
               ))}
             </Form.Select>
 
               <h2>Select your toppings</h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
               {
-                toppings.map(top => <Form.Check key={top.id} label={top.name} />)
+                toppings.map(top => <Form.Check key={top.itemid} label={top.name} />)
               }
               </div>
 
