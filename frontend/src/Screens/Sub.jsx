@@ -11,6 +11,9 @@ const Sub = () => {
     const [selectedBread, setSelectedBread] = useState({})
     const [selectedCheese, setSelectedCheese] = useState({})
     const [selectedKit, setSelectedKit] = useState({})
+    const [whole, setWhole] = useState(false)
+    const [doubleMeat, setDoubleMeat] = useState(false)
+    const [doubleCheese, setDoubleCheese] = useState(false)
     const [totalCals, setTotalCals] = useState(0)
     const [totalCarbs, setTotalCarbs] = useState(0)
     const [totalFat, setTotalFat] = useState(0)
@@ -35,12 +38,11 @@ const Sub = () => {
     
      useEffect (() => {
       fetchData()
-      updateTotals()
     }, [])
 
     useEffect(() => {
       updateTotals()
-    }, [selectedBread, selectedCheese, selectedKit])
+    }, [selectedBread, selectedCheese, selectedKit, whole])
 
     const updateItem = async (e) => {
       try {
@@ -59,12 +61,21 @@ const Sub = () => {
     }
 
     const updateTotals = () => {
-      const cals = selectedBread.cals + selectedCheese.cals + selectedKit.cals
-      const carbs = selectedBread.carbs + selectedCheese.carbs + selectedKit.carbs
-      const fat = selectedBread.fat + selectedCheese.fat + selectedKit.fat
-      const protein = selectedBread.protein + selectedCheese.protein + selectedKit.protein
-      const sodium = selectedBread.na + selectedCheese.na + selectedKit.na
-      const cholesterol = selectedBread.cholesterol + selectedCheese.cholesterol + selectedKit.cholesterol
+      let cals = selectedBread.cals + selectedCheese.cals + selectedKit.cals
+      let carbs = selectedBread.carbs + selectedCheese.carbs + selectedKit.carbs
+      let fat = selectedBread.fat + selectedCheese.fat + selectedKit.fat
+      let protein = selectedBread.protein + selectedCheese.protein + selectedKit.protein
+      let sodium = selectedBread.na + selectedCheese.na + selectedKit.na
+      let cholesterol = selectedBread.cholesterol + selectedCheese.cholesterol + selectedKit.cholesterol
+      
+      if(!whole) {
+        cals = cals/2
+        carbs = carbs/2 
+        fat = fat/2 
+        protein = protein/2 
+        sodium = sodium/2 
+        cholesterol = cholesterol/2 
+      }
 
       isNaN(cals) ? setTotalCals(0) : setTotalCals(cals) 
       isNaN(carbs) ? setTotalCarbs(0) : setTotalCarbs(carbs)
@@ -91,7 +102,9 @@ const Sub = () => {
                 </Form.Select> 
               </Col>
               <Col>
-                  <Form.Check type="switch"label="Whole?"/>
+                  <Form.Check type="switch"label="Whole?" onChange={(e) => {
+                    setWhole(!whole)
+                  }}/>
               </Col>
             </Row>
                      
