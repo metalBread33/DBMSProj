@@ -42,7 +42,7 @@ const Sub = () => {
 
     useEffect(() => {
       updateTotals()
-    }, [selectedBread, selectedCheese, selectedKit, whole])
+    }, [selectedBread, selectedCheese, selectedKit, whole, doubleCheese, doubleMeat])
 
     const updateItem = async (e) => {
       try {
@@ -77,6 +77,25 @@ const Sub = () => {
         cholesterol = cholesterol/2 
       }
 
+      if(doubleCheese) {
+        cals += selectedCheese.cals
+        carbs += selectedCheese.carbs
+        fat += selectedCheese.fat
+        protein += selectedCheese.protein
+        sodium += selectedCheese.sodium
+        cholesterol += selectedCheese.cholesterol
+      }
+      
+      if(doubleMeat) {
+        cals += selectedKit.cals
+        carbs += selectedKit.carbs
+        fat += selectedKit.fat
+        protein += selectedKit.protein
+        sodium += selectedKit.sodium
+        cholesterol += selectedKit.cholesterol
+      }
+
+
       isNaN(cals) ? setTotalCals(0) : setTotalCals(cals) 
       isNaN(carbs) ? setTotalCarbs(0) : setTotalCarbs(carbs)
       isNaN(fat) ? setTotalFat(0) : setTotalFat(fat)
@@ -102,7 +121,7 @@ const Sub = () => {
                 </Form.Select> 
               </Col>
               <Col>
-                  <Form.Check type="switch"label="Whole?" onChange={(e) => {
+                  <Form.Check type="switch"label="Whole?" onChange={() => {
                     setWhole(!whole)
                   }}/>
               </Col>
@@ -121,7 +140,9 @@ const Sub = () => {
               </Col>
 
               <Col>
-                  <Form.Check type='switch' label='Double Cheese'/>
+                  <Form.Check type='switch' label='Double Cheese' onChange={() => {
+                    setDoubleCheese(!doubleCheese)
+                  }}/>
               </Col>
             </Row>
             
@@ -138,7 +159,9 @@ const Sub = () => {
            </Col> 
 
            <Col>
-              <Form.Check type='switch' label='Double Meat' />
+              <Form.Check type='switch' label='Double Meat' onChange={() => {
+                setDoubleMeat(!doubleMeat)
+              }} />
            </Col>
           </Row>  
         
