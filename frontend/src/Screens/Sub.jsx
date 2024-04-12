@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PieChart from "../Components/PieChart"
 import {Row, Col, Button, Form} from "react-bootstrap"
+import { RxFontRoman } from 'react-icons/rx'
 
 const Sub = () => {
     const [toppings, setToppings] = useState([])
@@ -79,43 +80,62 @@ const Sub = () => {
         <Col md={6}style={{textAlign: 'left'}}>
           <Form>
             <h2>Select your choice of bread</h2>
-            <Form.Select onChange={(e)=> {updateItem(e.target.value); 
-             updateTotals() 
-            }}>
-              <option></option>
-              {breads.map((bread) => (
-                <option key={bread.itemid}>{bread.name}</option>
-              ))}
-            </Form.Select>          
+            <Row>
+              <Col md={5}>
+                <Form.Select onChange={(e)=> {updateItem(e.target.value); 
+                updateTotals()}}>
+                  <option></option>
+                  {breads.map((bread) => (
+                    <option key={bread.itemid}>{bread.name}</option>
+                  ))}
+                </Form.Select> 
+              </Col>
+              <Col>
+                  <Form.Check type="switch"label="Whole?"/>
+              </Col>
+            </Row>
+                     
 
             <h2>Select your choice of cheese</h2>
-            <Form.Select onChange={(e) => {updateItem(e.target.value);
-            updateTotals()}}>
-              <option></option>
-              {cheeses.map((cheese) => (
-                <option key={cheese.itemid}>{cheese.name}</option>
-              ))}
-            </Form.Select>
+            <Row>
+              <Col md={5}>
+                <Form.Select onChange={(e) => {updateItem(e.target.value); updateTotals()}}>
+                  <option></option>
+                    {cheeses.map((cheese) => (
+                  <option key={cheese.itemid}>{cheese.name}</option>
+                  ))}
+                </Form.Select>
+              </Col>
 
+              <Col>
+                  <Form.Check type='switch' label='Double Cheese'/>
+              </Col>
+            </Row>
+            
             <h2>Select your desired sandwich</h2>
+          <Row>
+           <Col md={5}>
             <Form.Select onChange={(e) => {updateItem(e.target.value);
-            updateTotals()}}>
+              updateTotals()}}>
               <option></option>
               {kits.map((kit) => (
                 <option key={kit.itemid}>{kit.name}</option>
               ))}
             </Form.Select>
+           </Col> 
 
-              <h2>Select your toppings</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
-              {
-                toppings.map(top => <Form.Check key={top.itemid} label={top.name} />)
-              }
-              </div>
+           <Col>
+              <Form.Check type='switch' label='Double Meat' />
+           </Col>
+          </Row>  
+        
+          <h2>Select your toppings</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+            {
+              toppings.map(top => <Form.Check key={top.itemid} label={top.name} />)
+            }
+            </div>
 
-            <h2>Extras</h2>
-            <Form.Check label='Double Meat'></Form.Check>
-            <Form.Check label='Double Cheese'></Form.Check>
           </Form>
        </Col>
 
