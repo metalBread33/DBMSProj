@@ -82,7 +82,7 @@ const Sub = () => {
         carbs += selectedCheese.carbs
         fat += selectedCheese.fat
         protein += selectedCheese.protein
-        sodium += selectedCheese.sodium
+        sodium += selectedCheese.na
         cholesterol += selectedCheese.cholesterol
       }
       
@@ -91,7 +91,7 @@ const Sub = () => {
         carbs += selectedKit.carbs
         fat += selectedKit.fat
         protein += selectedKit.protein
-        sodium += selectedKit.sodium
+        sodium += selectedKit.na
         cholesterol += selectedKit.cholesterol
       }
 
