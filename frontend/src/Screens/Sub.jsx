@@ -11,6 +11,7 @@ const Sub = () => {
     const [selectedBread, setSelectedBread] = useState({})
     const [selectedCheese, setSelectedCheese] = useState({})
     const [selectedKit, setSelectedKit] = useState({})
+    const [selectedToppings, setSelectedToppings] = useState([])
     const [whole, setWhole] = useState(false)
     const [doubleMeat, setDoubleMeat] = useState(false)
     const [doubleCheese, setDoubleCheese] = useState(false)
@@ -42,7 +43,7 @@ const Sub = () => {
 
     useEffect(() => {
       updateTotals()
-    }, [selectedBread, selectedCheese, selectedKit, whole, doubleCheese, doubleMeat])
+    }, [selectedBread, selectedCheese, selectedKit, selectedToppings, whole, doubleCheese, doubleMeat, selectedToppings])
 
     const updateItem = async (e) => {
       try {
@@ -59,6 +60,27 @@ const Sub = () => {
         console.log(error); 
       }
     }
+
+    const addToppings = async (toppingID) => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/individual/${toppingID}`)
+        const data = await response.json()
+        const topping = data[0]
+        let tempArray = [...selectedToppings]
+
+        if(selectedToppings.includes(topping.itemid)) {
+          const index = tempArray.indexOf(topping.itemid)
+          tempArray.splice(index, 1)
+        } else {
+          //console.log("Item not in array");
+          tempArray.push(topping.itemid)
+        }
+
+        setSelectedToppings(tempArray)
+      } catch (error) {
+        
+      }
+    } 
 
     const updateTotals = () => {
       let cals = selectedBread.cals + selectedCheese.cals + selectedKit.cals
@@ -94,6 +116,7 @@ const Sub = () => {
         sodium += selectedKit.na
         cholesterol += selectedKit.cholesterol
       }
+
 
 
       isNaN(cals) ? setTotalCals(0) : setTotalCals(cals) 
@@ -168,7 +191,7 @@ const Sub = () => {
           <h2>Select your toppings</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
             {
-              toppings.map(top => <Form.Check key={top.itemid} label={top.name} />)
+              toppings.map(top => <Form.Check key={top.itemid} label={top.name} onChange={() => {addToppings(top.itemid)}} />)
             }
             </div>
 
