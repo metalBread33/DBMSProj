@@ -68,12 +68,12 @@ const Sub = () => {
         const topping = data[0]
         let tempArray = [...selectedToppings]
 
-        if(selectedToppings.includes(topping.itemid)) {
-          const index = tempArray.indexOf(topping.itemid)
+        if(selectedToppings.includes(topping)) {
+          const index = selectedToppings.indexOf(topping)
           tempArray.splice(index, 1)
         } else {
           //console.log("Item not in array");
-          tempArray.push(topping.itemid)
+          tempArray.push(topping)
         }
 
         setSelectedToppings(tempArray)
@@ -81,6 +81,7 @@ const Sub = () => {
         
       }
     } 
+
 
     const updateTotals = () => {
       let cals = selectedBread.cals + selectedCheese.cals + selectedKit.cals
@@ -117,7 +118,14 @@ const Sub = () => {
         cholesterol += selectedKit.cholesterol
       }
 
-
+      selectedToppings.forEach((topping) => {
+        cals += topping.cals
+        carbs += topping.carbs
+        fat += topping.fat
+        protein += topping.protein
+        sodium += topping.na
+        cholesterol += topping.cholesterol
+      })
 
       isNaN(cals) ? setTotalCals(0) : setTotalCals(cals) 
       isNaN(carbs) ? setTotalCarbs(0) : setTotalCarbs(carbs)
