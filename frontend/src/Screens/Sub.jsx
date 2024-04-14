@@ -68,11 +68,19 @@ const Sub = () => {
         const topping = data[0]
         let tempArray = [...selectedToppings]
 
-        if(selectedToppings.includes(topping)) {
-          const index = selectedToppings.indexOf(topping)
+        console.log(topping)
+        console.log(tempArray)
+
+        var inArray = false
+        for (var i = 0; i < selectedToppings.length; i++) {
+          if(JSON.stringify(selectedToppings[i]) === JSON.stringify(topping))
+            inArray = true
+        }
+
+        if(inArray) {
+          const index = tempArray.indexOf(topping)
           tempArray.splice(index, 1)
         } else {
-          //console.log("Item not in array");
           tempArray.push(topping)
         }
 
