@@ -8,9 +8,9 @@ const Sub = () => {
     const [kits, setKits] = useState([])
     const [cheeses, setCheeses] = useState([])
     const [breads, setBreads] = useState([])
-    const [selectedBread, setSelectedBread] = useState({})
-    const [selectedCheese, setSelectedCheese] = useState({})
-    const [selectedKit, setSelectedKit] = useState({})
+    const [selectedBread, setSelectedBread] = useState(null)
+    const [selectedCheese, setSelectedCheese] = useState(null)
+    const [selectedKit, setSelectedKit] = useState(null)
     const [selectedToppings, setSelectedToppings] = useState([])
     const [whole, setWhole] = useState(false)
     const [doubleMeat, setDoubleMeat] = useState(false)
@@ -86,19 +86,58 @@ const Sub = () => {
 
         setSelectedToppings(tempArray)
       } catch (error) {
-        
+       console.error(error.message); 
       }
     } 
 
 
     const updateTotals = () => {
-      let cals = selectedBread.cals + selectedCheese.cals + selectedKit.cals
-      let carbs = selectedBread.carbs + selectedCheese.carbs + selectedKit.carbs
-      let fat = selectedBread.fat + selectedCheese.fat + selectedKit.fat
-      let protein = selectedBread.protein + selectedCheese.protein + selectedKit.protein
-      let sodium = selectedBread.na + selectedCheese.na + selectedKit.na
-      let cholesterol = selectedBread.cholesterol + selectedCheese.cholesterol + selectedKit.cholesterol
-      
+
+      let cals = 0
+      let carbs = 0
+      let fat = 0
+      let protein = 0
+      let sodium = 0
+      let cholesterol = 0
+
+      if(selectedBread != null ) {
+        console.log("it worked");
+        cals += selectedBread.cals
+        carbs += selectedBread.carbs
+        fat += selectedBread.fat
+        protein += selectedBread.protein
+        sodium += selectedBread.na 
+        cholesterol += selectedBread.cholesterol 
+      }
+
+      if(selectedCheese != null) {
+        cals += selectedCheese.cals
+        carbs += selectedCheese.carbs
+        fat += selectedCheese.fat 
+        protein += selectedCheese.protein 
+        sodium += selectedCheese.na 
+        cholesterol += selectedCheese.cholesterol
+      }
+
+      if(selectedKit != null) {
+        cals += selectedKit.cals
+        carbs += selectedKit.carbs
+        fat += selectedKit.fat 
+        protein += selectedKit.protein 
+        sodium += selectedKit.na 
+        cholesterol += selectedKit.cholesterol
+      }
+
+
+      selectedToppings.forEach((topping) => {
+        cals += topping.cals
+        carbs += topping.carbs
+        fat += topping.fat
+        protein += topping.protein
+        sodium += topping.na
+        cholesterol += topping.cholesterol
+      })
+
       if(!whole) {
         cals = cals/2
         carbs = carbs/2 
@@ -126,15 +165,7 @@ const Sub = () => {
         cholesterol += selectedKit.cholesterol
       }
 
-      selectedToppings.forEach((topping) => {
-        cals += topping.cals
-        carbs += topping.carbs
-        fat += topping.fat
-        protein += topping.protein
-        sodium += topping.na
-        cholesterol += topping.cholesterol
-      })
-
+      
       isNaN(cals) ? setTotalCals(0) : setTotalCals(cals) 
       isNaN(carbs) ? setTotalCarbs(0) : setTotalCarbs(carbs)
       isNaN(fat) ? setTotalFat(0) : setTotalFat(fat)
