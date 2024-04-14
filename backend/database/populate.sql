@@ -76,3 +76,9 @@ INSERT INTO items (itemid, name, itemtype, cals, carbs, fat, protein, na, choles
 VALUES
     (200, 'Hot Honey Chicken Tender Sub', 1, 1090, 75, 64, 49, 1760, 160, FALSE),
     (201, 'Chicken Bacon Ranch Tender Sub', 1, 1750, 56, 127, 97, 2760, 305, FALSE);
+
+--inserts dummy users
+INSERT INTO users (email, userName, admin, password, fav)
+VALUES 
+    ('admin@email.com', 'admin', TRUE, '123456', null),
+    ('email@email.com', 'user', FALSE, '123456', null);
