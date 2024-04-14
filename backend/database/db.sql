@@ -14,17 +14,16 @@ CREATE TABLE items (
 );
 
 CREATE TABLE subs (
-    subid INT[] PRIMARY KEY,
+    subid INT PRIMARY KEY,
     subname VARCHAR(64),
     whole BOOLEAN, 
     breadid INT,
     meatid INT,
     cheeseid INT,
-    topid INT,
+    topid INT[],
     FOREIGN KEY (breadid) REFERENCES items, 
     FOREIGN KEY (meatid) REFERENCES items,
     FOREIGN KEY (cheeseid) REFERENCES items,
-    FOREIGN KEY (topid) REFERENCES items,
     doublemeat BOOLEAN,
     doublecheese BOOLEAN
 ); 
@@ -34,6 +33,6 @@ CREATE TABLE users (
     userName VARCHAR(64),
     admin BOOLEAN,
     password VARCHAR(255),
-    favs INT[],
-    FOREIGN KEY (favs) REFERENCES subs
+    fav INT,
+    FOREIGN KEY (fav) REFERENCES subs
 );
