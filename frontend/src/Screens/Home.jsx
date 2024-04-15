@@ -1,8 +1,11 @@
 import React from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../Components/Auth'
 
 const Home = () => {
+
+  const auth = useAuth()
 
   const nav = useNavigate()
 
@@ -33,16 +36,16 @@ const Home = () => {
           <Button className='btn-success' onClick={SubClick}>Calculate Sub Nutrition</Button>
         </Row>
         <br></br>
-        {true &&
+        {auth.user && (
           <Row>
             <Button className='btn-success' onClick={FavClick}>View Favorites</Button>
-          </Row>
+          </Row> )
         }
         <br></br>
-        {true &&
+        {auth.user && auth.user.admin && (
           <Row>
             <Button className='btn-success' onClick={AdminClick}>Admin</Button>
-          </Row>
+          </Row> )
         }
 
 
