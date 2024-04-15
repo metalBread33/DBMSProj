@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Button, Form } from 'react-bootstrap'
-import { GiConsoleController } from 'react-icons/gi'
 import {toast} from 'react-toastify'
 
 const Login = () => {
@@ -13,8 +12,8 @@ const Login = () => {
     const response = await fetch(`http://localhost:5000/api/user/${email}`)
     const data = await response.json()
     console.log(data[0]);
-    console.log(response)
-    return data
+    //console.log(response)
+    return data[0]
     } catch (error) {
       console.log(error.message);  
     }
@@ -23,13 +22,13 @@ const Login = () => {
   useEffect(() => {
   }, [email])
 
-  const submit = async () => {
+  const submit = async (e) => {
+    e.preventDefault()
     const foundUser = await fetchData()
     console.log(foundUser)
-    if(foundUser ===   undefined){
+    if(!foundUser){
       console.log("no user found")
-    } else 
-    if(foundUser.password != password){
+    } else if(foundUser.password !== password){
       console.log("passwords dont match")
     } else {
 

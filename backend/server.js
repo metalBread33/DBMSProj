@@ -87,6 +87,7 @@ app.get('/api/:name', async (req, res) => {
     }
 })
 
+//get user info from email  
 app.get('/api/user/:email', async (req, res) => {
     try {
         const {email} = req.params
