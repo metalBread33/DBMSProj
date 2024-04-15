@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, Button, Form } from 'react-bootstrap'
 import {toast} from 'react-toastify'
+import { useAuth } from '../Components/Auth'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const auth = useAuth()
+  const nav = useNavigate()
   
 
   const fetchData = async () => {
     try {
     const response = await fetch(`http://localhost:5000/api/user/${email}`)
     const data = await response.json()
-    console.log(data[0]);
-    //console.log(response)
     return data[0]
     } catch (error) {
       console.log(error.message);  
@@ -25,15 +27,14 @@ const Login = () => {
   const submit = async (e) => {
     e.preventDefault()
     const foundUser = await fetchData()
-    console.log(foundUser)
     if(!foundUser){
       console.log("no user found")
     } else if(foundUser.password !== password){
       console.log("passwords dont match")
     } else {
 
-    console.log(email)
-    console.log(password)
+      auth.login(foundUser)
+      nav('/')
     }
   }
   return (
