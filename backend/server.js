@@ -87,5 +87,14 @@ app.get('/api/:name', async (req, res) => {
     }
 })
 
+app.get('/api/user/:email', async (req, res) => {
+    try {
+        const {email} = req.params
+        const query = await pool.query("SELECT * FROM users WHERE email = $1", [email])
+        res.send(query.rows)
+    } catch (error) {
+        console.log(error.message)
+    }
+})
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
