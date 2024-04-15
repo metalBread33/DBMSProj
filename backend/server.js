@@ -6,6 +6,7 @@ import cors from 'cors'
 const port = 5000;
 
 const app = express()
+app.use(express.json())
 
 app.use(cors())
 //used to make sure api is up
@@ -95,6 +96,19 @@ app.get('/api/user/:email', async (req, res) => {
         res.send(query.rows)
     } catch (error) {
         console.log(error.message)
+    }
+})
+
+//register user
+app.post('/api/user', async (req, res) => {
+    try {
+        const {email, username, password} = req.body
+        const newUser = await pool.query("INSERT INTO users (email, username, password, admin) VALUES($1, $2, $3, FALSE) RETURNING *", [email, username, password]
+        )
+        res.send(newUser.rows)
+    } catch (error) {
+        console.error(error.message)
+        res.send(error.message)
     }
 })
 

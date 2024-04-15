@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import { Row, Col, Button, Form } from 'react-bootstrap'
-import {toast} from 'react-toastify'
 import { useAuth } from '../Components/Auth'
 import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -21,9 +21,6 @@ const Login = () => {
     }
   }
 
-  useEffect(() => {
-  }, [email])
-
   const submit = async (e) => {
     e.preventDefault()
     const foundUser = await fetchData()
@@ -32,7 +29,6 @@ const Login = () => {
     } else if(foundUser.password !== password){
       console.log("passwords dont match")
     } else {
-
       auth.login(foundUser)
       nav('/')
     }
@@ -60,6 +56,8 @@ const Login = () => {
             <Button type='submit' className='btn-success mt-2'>
               Sign in
             </Button>
+            <br/>
+            <p>Don't have an account? <Link to='/register'> Sign Up</Link></p>
           </Form>
         </Col>
       </Row>
