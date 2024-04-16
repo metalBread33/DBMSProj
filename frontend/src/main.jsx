@@ -13,6 +13,8 @@ import Favs from './Screens/Favs'
 import Admin from './Screens/Admin'
 import Items from './Screens/Items'
 import Register from './Screens/Register'
+import AdminItems from './Screens/AdminItems'
+import AdminUsers from './Screens/AdminUsers'
 
 const router = createBrowserRouter(
     createRoutesFromElements (
@@ -25,6 +27,8 @@ const router = createBrowserRouter(
             <Route path='/item/:id' element={<Individual/>}/>
             <Route path='/favs' element={<Favs/>}/>
             <Route path='/admin' element={<Admin/>}/>
+            <Route path='/admin/items' element={<AdminItems/>}/>
+            <Route path='/admin/users' element={<AdminUsers/>}/>
         </Route>
     )
 )
