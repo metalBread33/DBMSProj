@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useAuth } from '../Components/Auth'
+import { useAuth } from '../../Components/Auth'
 import { useNavigate } from 'react-router-dom'
 import { Row, Col, Button } from 'react-bootstrap'
 

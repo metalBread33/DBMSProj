@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Row, Col, Form, InputGroup, Table, Button } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../Components/Auth'
-import { FaEdit, FaTrash} from 'react-icons/fa'
+import { useAuth } from '../../Components/Auth'
+import { FaEdit, FaTrash, FaPlus} from 'react-icons/fa'
 
 
 const AdminItems = () => {
@@ -107,6 +107,12 @@ const AdminItems = () => {
 
       {/*Table */}
       <Col md={10}>
+        <Button style={{color: 'black'}} variant='link'
+          onClick={(e) => {
+            nav('/admin/items/add')
+          }}>
+          <FaPlus/> Add Item
+        </Button>
         <Row>
           <Table striped hover responsive className='table-lg'>
             <thead>
@@ -127,10 +133,10 @@ const AdminItems = () => {
                 .map((item) => (
                 <tr key={item.itemid}>
                   <td><Link style={{color: 'black'}} to={`/item/${item.itemid}`}>{item.name}</Link></td>
-                  <td><Button variant='link'>
+                  <td><Button style={{color: 'black'}} variant='link'>
                     <FaEdit/>
                     </Button></td>
-                  <td> <Button variant='link'>
+                  <td> <Button style={{color: 'black'}} variant='link'>
                     <FaTrash/>
                   </Button>
                   </td>
