@@ -17,7 +17,7 @@ app.get('/', (req,res) => {
 //get all items
 app.get('/api/individual', async (req, res) => {
     try {
-        const query =  await pool.query("SELECT * FROM items")
+        const query =  await pool.query("SELECT * FROM items ORDER BY itemid")
         res.json(query.rows)
     } catch (err) {
         console.error(err.message)
