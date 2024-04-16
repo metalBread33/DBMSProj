@@ -146,6 +146,27 @@ app.delete('/api/item/:id', async (req, res) => {
     }
 })
 
+app.get('/users', async (req, res) => {
+    try {
+        const query = await pool.query("SELECT * FROM users")
+        res.send(query.rows)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+app.delete('/users/:email', async (req, res) => {
+    try {
+        const {email} = req.params
+        const query = await pool.query("DELETE FROM users WHERE email = $1", [email])
+        res.send(`User with email ${email} has been deleted`)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
 //get next avaliable id
 app.get('/nextid', async (req, res) => {
     try {
