@@ -14,6 +14,7 @@ app.get('/', (req,res) => {
     res.send('API is running ...')
 })
 
+//item api calls
 //get all items
 app.get('/api/individual', async (req, res) => {
     try {
@@ -88,6 +89,57 @@ app.get('/api/:name', async (req, res) => {
     }
 })
 
+//add item to db
+app.post('/api/item', async(req, res) => {
+    try {
+        const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
+        const newItem = await pool.query("INSERT INTO items (name, cals, carbs, fat, protein, na, cholesterol, itemtype, itemid, bh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+            [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
+        res.send(newItem.rows)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+//update an item
+app.put('/api/item', async (req, res) => {
+   try {
+    const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
+    const update = await pool.query("UPDATE items SET name = $1, cals = $2, carbs = $3, fat = $4, protein = $5, na = $6, cholesterol = $7, itemtype = $8, bh = $10 WHERE itemid=$9 RETURNING *",
+        [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
+    res.send(update.rows)
+   } catch (error) {
+    console.log(error);
+    res.send(error)
+   } 
+})
+
+//delete an item
+app.delete('/api/item/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const query = pool.query("DELETE FROM items WHERE itemid = $1", [id])
+        res.send(`Item number ${id} has been deleted`)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+//get next avaliable itemid
+app.get('/nextid', async (req, res) => {
+    try {
+        const result = await pool.query("SELECT MAX(itemid) FROM items;")
+        const maxid = result.rows[0].max
+        const nextid = maxid ? maxid+1 : 1
+        res.send({nextid})
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+
+//user api calls
 //get user info from email  
 app.get('/api/user/:email', async (req, res) => {
     try {
@@ -112,40 +164,8 @@ app.post('/api/user', async (req, res) => {
     }
 })
 
-app.post('/api/item', async(req, res) => {
-    try {
-        const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
-        const newItem = await pool.query("INSERT INTO items (name, cals, carbs, fat, protein, na, cholesterol, itemtype, itemid, bh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
-            [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
-        res.send(newItem.rows)
-    } catch (error) {
-        res.send(error)
-    }
-})
 
-app.put('/api/item', async (req, res) => {
-   try {
-    const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
-    const update = await pool.query("UPDATE items SET name = $1, cals = $2, carbs = $3, fat = $4, protein = $5, na = $6, cholesterol = $7, itemtype = $8, bh = $10 WHERE itemid=$9 RETURNING *",
-        [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
-    res.send(update.rows)
-   } catch (error) {
-    console.log(error);
-    res.send(error)
-   } 
-})
-
-app.delete('/api/item/:id', async (req, res) => {
-    try {
-        const {id} = req.params
-        const query = pool.query("DELETE FROM items WHERE itemid = $1", [id])
-        res.send(`Item number ${id} has been deleted`)
-    } catch (error) {
-        console.log(error)
-        res.send(error)
-    }
-})
-
+//get all user info
 app.get('/users', async (req, res) => {
     try {
         const query = await pool.query("SELECT * FROM users")
@@ -156,6 +176,7 @@ app.get('/users', async (req, res) => {
     }
 })
 
+//delete a user 
 app.delete('/users/:email', async (req, res) => {
     try {
         const {email} = req.params
@@ -167,16 +188,5 @@ app.delete('/users/:email', async (req, res) => {
     }
 })
 
-//get next avaliable id
-app.get('/nextid', async (req, res) => {
-    try {
-        const result = await pool.query("SELECT MAX(itemid) FROM items;")
-        const maxid = result.rows[0].max
-        const nextid = maxid ? maxid+1 : 1
-        res.send({nextid})
-    } catch (error) {
-        res.send(error)
-    }
-})
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
