@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import PieChart from "../Components/PieChart"
 import {Row, Col, Button, Form} from "react-bootstrap"
-import { RxFontRoman } from 'react-icons/rx'
+import { useAuth } from '../Components/Auth'
 
 const Sub = () => {
     const [toppings, setToppings] = useState([])
@@ -21,6 +20,8 @@ const Sub = () => {
     const [totalProtein, setTotalProtein] = useState(0)
     const [totalNa, setTotalNa] = useState(0)
     const [totalCholes, setTotalCholes] = useState(0)
+    const auth = useAuth()
+
 
     const fetchData = async () => {
       try {
@@ -90,9 +91,7 @@ const Sub = () => {
       }
     } 
 
-
     const updateTotals = () => {
-
       let cals = 0
       let carbs = 0
       let fat = 0
@@ -174,6 +173,10 @@ const Sub = () => {
       isNaN(cholesterol) ? setTotalCholes(0) : setTotalCholes(cholesterol)
     }
 
+    const saveToFavs = () => {
+
+    }
+
   return (
     <div>
       <Row>
@@ -245,7 +248,7 @@ const Sub = () => {
           </Form>
        </Col>
 
-       <Col md={3}>
+       <Col md={6} className='justify-content-md-center' style={{textAlign: 'center'}}>
         <h2>Nutrition</h2>
         <p>{totalCals} cals</p>
         <p>{totalCarbs}g of Carbs</p>
@@ -253,12 +256,10 @@ const Sub = () => {
         <p>{totalProtein}g of Protein</p>
         <p>{totalNa}mg of Sodium</p>
         <p>{totalCholes}mg of Cholesterol</p>
+        {auth.user && 
+          <Button className='btn-success' onClick={() => {saveToFavs}}>Save sub to favorites</Button>
+        }
        </Col>
-
-        <Col md={3}>
-          <PieChart/>
-          <Button>Save sub to favorites</Button>
-        </Col>
 
       </Row>
     </div>
