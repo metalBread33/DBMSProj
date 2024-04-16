@@ -133,9 +133,12 @@ const AdminItems = () => {
                 .map((item) => (
                 <tr key={item.itemid}>
                   <td><Link style={{color: 'black'}} to={`/item/${item.itemid}`}>{item.name}</Link></td>
-                  <td><Button style={{color: 'black'}} variant='link'>
-                    <FaEdit/>
-                    </Button></td>
+                  <td>
+                    <Button style={{color: 'black'}} variant='link'
+                      onClick={() => {nav(`/admin/item/edit/${item.itemid}`)}}>
+                      <FaEdit/>
+                    </Button>
+                  </td>
                   <td> <Button style={{color: 'black'}} variant='link'>
                     <FaTrash/>
                   </Button>

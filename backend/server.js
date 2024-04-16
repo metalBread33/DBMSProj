@@ -123,6 +123,18 @@ app.post('/api/item', async(req, res) => {
     }
 })
 
+app.put('/api/item', async (req, res) => {
+   try {
+    const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
+    const update = await pool.query("UPDATE items SET name = $1, cals = $2, carbs = $3, fat = $4, protein = $5, na = $6, cholesterol = $7, itemtype = $8, bh = $10 WHERE itemid=$9 RETURNING *",
+        [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
+    res.send(update.rows)
+   } catch (error) {
+    console.log(error);
+    res.send(error)
+   } 
+})
+
 //get next avaliable id
 app.get('/nextid', async (req, res) => {
     try {
