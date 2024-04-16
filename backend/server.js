@@ -135,6 +135,17 @@ app.put('/api/item', async (req, res) => {
    } 
 })
 
+app.delete('/api/item/:id', async (req, res) => {
+    try {
+        const {id} = req.params
+        const query = pool.query("DELETE FROM items WHERE itemid = $1", [id])
+        res.send(`Item number ${id} has been deleted`)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
 //get next avaliable id
 app.get('/nextid', async (req, res) => {
     try {

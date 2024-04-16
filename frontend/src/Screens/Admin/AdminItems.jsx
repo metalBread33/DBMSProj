@@ -32,7 +32,7 @@ const AdminItems = () => {
       if(auth.user === null || auth.user.admin == false)
         nav('/')
       getItems()
-    }, [])
+    }, [items])
 
     const sortData = (e) => {
       const selected = e.target.value  //so i don't have to write e... over and over
@@ -60,6 +60,22 @@ const AdminItems = () => {
 
     const itemType = (e) => {
       setType(e.target.value)
+    }
+
+    const deleteItem = async (id) => {
+      if(window.confirm("Are you sure you want to delete this item?")){
+        try {
+          console.log(`Delete item number ${id}`);
+          const response = await fetch(`http://localhost:5000/api/item/${id}`,
+          {
+            method: "DELETE"
+          })
+          
+          return response
+        } catch (error) {
+         console.error(error) 
+        }
+      }
     }
 
   return (
@@ -139,9 +155,11 @@ const AdminItems = () => {
                       <FaEdit/>
                     </Button>
                   </td>
-                  <td> <Button style={{color: 'black'}} variant='link'>
-                    <FaTrash/>
-                  </Button>
+                  <td> 
+                    <Button style={{color: 'black'}} variant='link'
+                      onClick={() => {deleteItem(item.itemid)}}>
+                      <FaTrash/>
+                    </Button>
                   </td>
                 </tr>
               ))}
