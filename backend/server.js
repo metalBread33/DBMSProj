@@ -112,4 +112,27 @@ app.post('/api/user', async (req, res) => {
     }
 })
 
+app.post('/api/item', async(req, res) => {
+    try {
+        const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
+        const newItem = await pool.query("INSERT INTO items (name, cals, carbs, fat, protein, na, cholesterol, itemtype, itemid, bh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+            [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
+        res.send(newItem.rows)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+//get next avaliable id
+app.get('/nextid', async (req, res) => {
+    try {
+        const result = await pool.query("SELECT MAX(itemid) FROM items;")
+        const maxid = result.rows[0].max
+        const nextid = maxid ? maxid+1 : 1
+        res.send({nextid})
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.listen(port, () => console.log(`Server running on port ${port}`))
