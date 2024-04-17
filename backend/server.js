@@ -196,8 +196,12 @@ app.post('/api/fav', async (req, res) => {
         const subQuery = await pool.query("INSERT INTO subs (subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole)" +
             "VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning *", [subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole])
         
-            res.send(subQuery.rows)
-        //res.send(`Save favorite sube with ${breadid} bread, ${meatid} meat, ${cheeseid} cheese, and ${toppings}`)
+        //iterate through toppings array, add each and subid to subtoppings table
+        toppings.forEach(async (topping) => {
+                await pool.query("INSERT INTO subtoppings(subid, toppingid) VALUES ($1, $2)", [subid, topping])
+            console.log("adding topping to db")
+        });
+        res.send(subQuery.rows)
         
     } catch (error) {
         console.log(error)
