@@ -14,7 +14,7 @@ CREATE TABLE items (
 );
 
 CREATE TABLE subs (
-    subid INT PRIMARY KEY,
+    subid SERIAL PRIMARY KEY,
     subname VARCHAR(64),
     whole BOOLEAN, 
     breadid INT,

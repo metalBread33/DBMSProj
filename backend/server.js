@@ -192,13 +192,16 @@ app.delete('/users/:email', async (req, res) => {
 
 app.post('/api/fav', async (req, res) => {
     try {
-        const {email, subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole, toppings} = req.body
-        const subQuery = await pool.query("INSERT INTO subs (subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole)" +
-            "VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning *", [subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole])
+        const {email, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole, toppings} = req.body
+        console.log(req.body)
+        const query = await pool.query("INSERT INTO subs (subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole)" +
+            "VALUES($1, $2, $3, $4, $5, $6, $7) returning subid", [subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole])
+        
+        const subid = query.rows[0].subid
         
         //iterate through toppings array, add each and subid to subtoppings table
         toppings.forEach(async (topping) => {
-                await pool.query("INSERT INTO subtoppings(subid, toppingid) VALUES ($1, $2)", [subid, topping])
+                await pool.query("INSERT INTO subtoppings(subid, toppingid) VALUES ($1, $2)", [subid, topping.itemid])
         });
 
         const favQuery = await pool.query("INSERT INTO userfavs(subid, email) VALUES ($1, $2)",
@@ -214,11 +217,12 @@ app.post('/api/fav', async (req, res) => {
 //get next sub id
 app.get('/nextid/sub', async(req, res) => {
     try {
-        const result = await pool.query("SELECT MAX(itemid) FROM subs;")
+        const result = await pool.query("SELECT MAX(subid) FROM subs ")
         const maxid = result.rows[0].max
         const nextid = maxid ? maxid+1 : 1
         res.send(nextid)
     } catch (error) {
+        console.log(error)
         res.send(error)
     }
 })

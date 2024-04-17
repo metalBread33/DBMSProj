@@ -12,14 +12,15 @@ const Sub = () => {
     const [selectedKit, setSelectedKit] = useState(null)
     const [selectedToppings, setSelectedToppings] = useState([])
     const [whole, setWhole] = useState(false)
-    const [doubleMeat, setDoubleMeat] = useState(false)
-    const [doubleCheese, setDoubleCheese] = useState(false)
+    const [doublemeat, setdoublemeat] = useState(false)
+    const [doublecheese, setdoublecheese] = useState(false)
     const [totalCals, setTotalCals] = useState(0)
     const [totalCarbs, setTotalCarbs] = useState(0)
     const [totalFat, setTotalFat] = useState(0)
     const [totalProtein, setTotalProtein] = useState(0)
     const [totalNa, setTotalNa] = useState(0)
     const [totalCholes, setTotalCholes] = useState(0)
+    const [subname, setSubName] = useState("My favorite sub")
     const auth = useAuth()
 
 
@@ -44,7 +45,7 @@ const Sub = () => {
 
     useEffect(() => {
       updateTotals()
-    }, [selectedBread, selectedCheese, selectedKit, selectedToppings, whole, doubleCheese, doubleMeat, selectedToppings])
+    }, [selectedBread, selectedCheese, selectedKit, selectedToppings, whole, doublecheese, doublemeat, selectedToppings])
 
     const updateItem = async (e) => {
       try {
@@ -100,7 +101,6 @@ const Sub = () => {
       let cholesterol = 0
 
       if(selectedBread != null ) {
-        console.log("it worked");
         cals += selectedBread.cals
         carbs += selectedBread.carbs
         fat += selectedBread.fat
@@ -117,6 +117,7 @@ const Sub = () => {
         sodium += selectedCheese.na 
         cholesterol += selectedCheese.cholesterol
       }
+      
 
       if(selectedKit != null) {
         cals += selectedKit.cals
@@ -146,7 +147,7 @@ const Sub = () => {
         cholesterol = cholesterol/2 
       }
 
-      if(doubleCheese) {
+      if(doublecheese) {
         cals += selectedCheese.cals
         carbs += selectedCheese.carbs
         fat += selectedCheese.fat
@@ -155,7 +156,7 @@ const Sub = () => {
         cholesterol += selectedCheese.cholesterol
       }
       
-      if(doubleMeat) {
+      if(doublemeat) {
         cals += selectedKit.cals
         carbs += selectedKit.carbs
         fat += selectedKit.fat
@@ -173,8 +174,27 @@ const Sub = () => {
       isNaN(cholesterol) ? setTotalCholes(0) : setTotalCholes(cholesterol)
     }
 
-    const saveToFavs = () => {
+    const saveToFavs = async () => {
+      try {
+        const email = auth.user.email 
+        const breadid = selectedBread.itemid
+        const meatid = selectedKit.itemid
+        const cheeseid = selectedCheese.itemid
+        const toppings = selectedToppings
 
+
+        const body = {email, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole, toppings }
+        const response = await fetch('http://localhost:5000/api/fav',
+        {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(body)
+        })
+        console.log(response)
+        return response
+      } catch (error) {
+        console.error(error)
+      }
     }
 
   return (
@@ -214,7 +234,7 @@ const Sub = () => {
 
               <Col>
                   <Form.Check type='switch' label='Double Cheese' onChange={() => {
-                    setDoubleCheese(!doubleCheese)
+                    setdoublecheese(!doublecheese)
                   }}/>
               </Col>
             </Row>
@@ -233,7 +253,7 @@ const Sub = () => {
 
            <Col>
               <Form.Check type='switch' label='Double Meat' onChange={() => {
-                setDoubleMeat(!doubleMeat)
+                setdoublemeat(!doublemeat)
               }} />
            </Col>
           </Row>  
@@ -256,8 +276,20 @@ const Sub = () => {
         <p>{totalProtein}g of Protein</p>
         <p>{totalNa}mg of Sodium</p>
         <p>{totalCholes}mg of Cholesterol</p>
-        {auth.user && 
-          <Button className='btn-success' onClick={() => {saveToFavs}}>Save sub to favorites</Button>
+        {auth.user && (
+          <>
+            <Form className='d-flex justify-content-md-center mt-2'>
+              <Col md={3} className='justify-content-md-center'>
+                <Form.Label className='h4'>Name this sub</Form.Label>
+                <Form.Control type='text'
+                  value={subname}
+                  onChange={(e) => setSubName(e.target.value)}>
+                </Form.Control>
+              </Col>
+            </Form>
+            <Button className='btn-success mt-3' onClick={() => {saveToFavs()}}>Save sub to favorites</Button>
+          </>
+        )
         }
        </Col>
 
