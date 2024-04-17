@@ -199,9 +199,11 @@ app.post('/api/fav', async (req, res) => {
         //iterate through toppings array, add each and subid to subtoppings table
         toppings.forEach(async (topping) => {
                 await pool.query("INSERT INTO subtoppings(subid, toppingid) VALUES ($1, $2)", [subid, topping])
-            console.log("adding topping to db")
         });
-        res.send(subQuery.rows)
+
+        const favQuery = await pool.query("INSERT INTO userfavs(subid, email) VALUES ($1, $2)",
+            [subid, email])
+        res.send(favQuery)
         
     } catch (error) {
         console.log(error)
