@@ -214,14 +214,14 @@ app.post('/api/fav', async (req, res) => {
     }
 })
 
-app.get('/get/fav', (req, res) => {
+app.get('/get/fav', async (req, res) => {
     try {
         const {email} = req.body
-        const query = ("SELECT * FROM userfavs" + 
-            "INNER JOIN subs ON userfavs.subid=subs.subid" + 
-            "INNER JOIN subtoppings ON subs.subid=subtoppings.subid" + 
-            "INNER JOIN items ON subtoppings.toppingid=items.itemid" +
-            "WHERE email=$1", [email])
+        const query = await pool.query("SELECT * FROM userfavs" + 
+            " INNER JOIN subs ON userfavs.subid = subs.subid" + 
+            " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
+            " INNER JOIN items ON subtoppings.toppingid = items.itemid" +
+            " WHERE email = $1", [email])
         console.log(query)
         res.send(query)
     } catch (error) {
