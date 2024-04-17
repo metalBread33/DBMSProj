@@ -188,5 +188,34 @@ app.delete('/users/:email', async (req, res) => {
     }
 })
 
+//api calls for favorites and subs
+
+app.post('/api/fav', async (req, res) => {
+    try {
+        const {email, subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole, toppings} = req.body
+        const subQuery = await pool.query("INSERT INTO subs (subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole)" +
+            "VALUES($1, $2, $3, $4, $5, $6, $7, $8) returning *", [subid, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole])
+        
+            res.send(subQuery.rows)
+        //res.send(`Save favorite sube with ${breadid} bread, ${meatid} meat, ${cheeseid} cheese, and ${toppings}`)
+        
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+//get next sub id
+app.get('/nextid/sub', async(req, res) => {
+    try {
+        const result = await pool.query("SELECT MAX(itemid) FROM subs;")
+        const maxid = result.rows[0].max
+        const nextid = maxid ? maxid+1 : 1
+        res.send(nextid)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
