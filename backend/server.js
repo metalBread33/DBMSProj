@@ -1,6 +1,33 @@
 import express from 'express'
 import pool from './database/data.js'
 import cors from 'cors'
+import {
+    allFoodItems,
+    oneItem,
+    allBreads,
+    allToppings,
+    allCheese,
+    allKits,
+    itemByName,
+    addItem,
+    updateItem,
+    deleteItem,
+    nextItemId
+} from './queries/ItemQueries.js'
+import {
+    deleteUser,
+    getAllUsers,
+    getUser,
+    registerUser
+} from './queries/UserQueries.js'
+import {
+    addFav,
+    addSub,
+    addToppingsToSub,
+    deleteFav,
+    getSubNut,
+    getUserFavs
+} from './queries/FavQueries.js'
 
 
 const port = 5000;
@@ -18,7 +45,7 @@ app.get('/', (req,res) => {
 //get all items
 app.get('/api/individual', async (req, res) => {
     try {
-        const query =  await pool.query("SELECT * FROM items ORDER BY itemid")
+        const query =  await pool.query(`${allFoodItems}`)
         res.json(query.rows)
     } catch (err) {
         console.error(err.message)
@@ -29,7 +56,7 @@ app.get('/api/individual', async (req, res) => {
 app.get('/api/individual/:id', async (req, res) => {
      try {
         const {id} = req.params
-        const query = await pool.query("SELECT * FROM items WHERE itemid = $1", [id])
+        const query = await pool.query(oneItem, [id])
         res.json(query.rows)
     } catch (err) {
         console.error(err.message)
@@ -39,7 +66,7 @@ app.get('/api/individual/:id', async (req, res) => {
 //get breads
 app.get('/api/breads', async (req, res) => {
     try {
-        const query = await pool.query("SELECT * FROM items WHERE itemtype = 4")
+        const query = await pool.query(allBreads)
         res.json(query.rows)
     } catch (err) {
         console.log(err.message)
@@ -49,7 +76,7 @@ app.get('/api/breads', async (req, res) => {
 //get toppings
 app.get('/api/toppings', async (req, res) => {
     try {
-        const query = await pool.query("SELECT * FROM items WHERE itemtype = 3 ORDER BY itemid")
+        const query = await pool.query(allToppings)
         res.json(query.rows)
     } catch (err) {
         console.log(err.message)
@@ -59,9 +86,8 @@ app.get('/api/toppings', async (req, res) => {
 //get cheese
 app.get('/api/cheese', async (req, res) => {
     try {
-        const query = await pool.query("SELECT * FROM items WHERE itemtype = 2")
+        const query = await pool.query(allCheese)
         res.json(query.rows)
-        //res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
     } catch (err) {
         console.log(err.message)
     }
@@ -70,9 +96,8 @@ app.get('/api/cheese', async (req, res) => {
 //get kits
 app.get('/api/kits', async (req, res) => {
     try {
-        const query = await pool.query("SELECT * FROM items WHERE itemtype = 1")
+        const query = await pool.query(allKits)
         res.json(query.rows)
-        //res.send("Nothing here yet, here are some cats: ᓚᘏᗢ ᓚᘏᗢ")
     } catch (err) {
         console.log(err.message)
     }
@@ -82,7 +107,7 @@ app.get('/api/kits', async (req, res) => {
 app.get('/api/:name', async (req, res) => {
     try {
         const {name} = req.params
-        const query = await pool.query("SELECT * FROM items WHERE name = $1", [name])
+        const query = await pool.query(itemByName, [name])
         res.json(query.rows)
     } catch (err) {
         console.log(err.message)
@@ -92,9 +117,32 @@ app.get('/api/:name', async (req, res) => {
 //add item to db
 app.post('/api/item', async(req, res) => {
     try {
-        const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
-        const newItem = await pool.query("INSERT INTO items (name, cals, carbs, fat, protein, na, cholesterol, itemtype, itemid, bh) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
-            [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
+        const {
+            name,
+            cals, 
+            carbs, 
+            fat, 
+            protein, 
+            na, 
+            cholesterol, 
+            itemtype, 
+            id, 
+            bh
+        } = req.body
+
+        const newItem = await pool.query(addItem, [
+            name, 
+            cals, 
+            carbs, 
+            fat, 
+            protein, 
+            na, 
+            cholesterol, 
+            itemtype, 
+            id, 
+            bh
+        ])
+
         res.send(newItem.rows)
     } catch (error) {
         res.send(error)
@@ -104,9 +152,32 @@ app.post('/api/item', async(req, res) => {
 //update an item
 app.put('/api/item', async (req, res) => {
    try {
-    const {name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh} = req.body
-    const update = await pool.query("UPDATE items SET name = $1, cals = $2, carbs = $3, fat = $4, protein = $5, na = $6, cholesterol = $7, itemtype = $8, bh = $10 WHERE itemid=$9 RETURNING *",
-        [name, cals, carbs, fat, protein, na, cholesterol, itemtype, id, bh])
+    const {
+        name,
+        cals, 
+        carbs, 
+        fat, 
+        protein, 
+        na, 
+        cholesterol, 
+        itemtype, 
+        id, 
+        bh
+    } = req.body
+
+    const update = await pool.query(updateItem, [
+        name, 
+        cals, 
+        carbs, 
+        fat, 
+        protein, 
+        na, 
+        cholesterol, 
+        itemtype, 
+        id, 
+        bh
+    ])
+
     res.send(update.rows)
    } catch (error) {
     console.log(error);
@@ -118,7 +189,7 @@ app.put('/api/item', async (req, res) => {
 app.delete('/api/item/:id', async (req, res) => {
     try {
         const {id} = req.params
-        const query = pool.query("DELETE FROM items WHERE itemid = $1", [id])
+        const query = pool.query(deleteItem, [id])
         res.send(`Item number ${id} has been deleted`)
     } catch (error) {
         console.log(error)
@@ -129,7 +200,7 @@ app.delete('/api/item/:id', async (req, res) => {
 //get next avaliable itemid
 app.get('/nextid', async (req, res) => {
     try {
-        const result = await pool.query("SELECT MAX(itemid) FROM items;")
+        const result = await pool.query(nextItemId)
         const maxid = result.rows[0].max
         const nextid = maxid ? maxid+1 : 1
         res.send({nextid})
@@ -144,7 +215,7 @@ app.get('/nextid', async (req, res) => {
 app.get('/api/user/:email', async (req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("SELECT * FROM users WHERE email = $1", [email])
+        const query = await pool.query(getUser, [email])
         res.send(query.rows)
     } catch (error) {
         console.log(error.message)
@@ -155,8 +226,12 @@ app.get('/api/user/:email', async (req, res) => {
 app.post('/api/user', async (req, res) => {
     try {
         const {email, username, password} = req.body
-        const newUser = await pool.query("INSERT INTO users (email, username, password, admin) VALUES($1, $2, $3, FALSE) RETURNING *", [email, username, password]
+        const newUser = await pool.query(registerUser, [
+            email, 
+            username, 
+            password]
         )
+
         res.send(newUser.rows)
     } catch (error) {
         console.error(error.message)
@@ -168,7 +243,7 @@ app.post('/api/user', async (req, res) => {
 //get all user info
 app.get('/users', async (req, res) => {
     try {
-        const query = await pool.query("SELECT * FROM users")
+        const query = await pool.query(getAllUsers)
         res.send(query.rows)
     } catch (error) {
         console.log(error)
@@ -180,7 +255,7 @@ app.get('/users', async (req, res) => {
 app.delete('/users/:email', async (req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("DELETE FROM users WHERE email = $1", [email])
+        const query = await pool.query(deleteUser, [email])
         res.send(`User with email ${email} has been deleted`)
     } catch (error) {
         console.log(error)
@@ -189,22 +264,38 @@ app.delete('/users/:email', async (req, res) => {
 })
 
 //api calls for favorites and subs
-
 app.post('/api/fav', async (req, res) => {
     try {
-        const {email, subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole, toppings} = req.body
-        console.log(req.body)
-        const query = await pool.query("INSERT INTO subs (subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole)" +
-            "VALUES($1, $2, $3, $4, $5, $6, $7) returning subid", [subname, breadid, meatid, cheeseid, doublemeat, doublecheese, whole])
+        const {
+            email, 
+            subname, 
+            breadid, 
+            meatid, 
+            cheeseid, 
+            doublemeat, 
+            doublecheese, 
+            whole, 
+            toppings
+        } = req.body
+
+        const query = await pool.query(addSub, [
+            subname, 
+            breadid, 
+            meatid, 
+            cheeseid, 
+            doublemeat, 
+            doublecheese, 
+            whole
+        ])
         
         const subid = query.rows[0].subid
         
         //iterate through toppings array, add each and subid to subtoppings table
         toppings.forEach(async (topping) => {
-                await pool.query("INSERT INTO subtoppings(subid, toppingid) VALUES ($1, $2)", [subid, topping.itemid])
+                await pool.query(addToppingsToSub, [subid, topping.itemid])
         });
 
-        const favQuery = await pool.query("INSERT INTO userfavs(subid, email) VALUES ($1, $2)",
+        const favQuery = await pool.query(addFav,
             [subid, email])
         res.send(favQuery)
         
@@ -217,28 +308,7 @@ app.post('/api/fav', async (req, res) => {
 app.get('/get/fav/:email', async (req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("SELECT subs.subid, subs.subname FROM userfavs" + 
-            " INNER JOIN subs ON userfavs.subid = subs.subid WHERE email = $1", [email])
-        res.send(query.rows)
-    } catch (error) {
-        console.error(error)
-        res.send(error)
-    }
-})
-
-app.get('/get/fav/detail/:email', async (req, res) => {
-    try {
-        const {email} = req.params
-        const query = await pool.query("SELECT subs.subname," + 
-                " subtoppings.toppingid," +
-                " subs.subid," +
-                " subs.meatid," +
-                " subs.cheeseid," +
-                " subs.breadid" + 
-            " FROM userfavs" + 
-                " INNER JOIN subs ON userfavs.subid = subs.subid" + 
-                " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
-            " WHERE email = $1", [email])
+        const query = await pool.query(getUserFavs, [email])
         res.send(query.rows)
     } catch (error) {
         console.error(error)
@@ -250,23 +320,8 @@ app.get('/get/fav/detail/:email', async (req, res) => {
 app.get('/api/get/sub/:subid', async(req, res) => {
     try {
         const {subid} = req.params
-        const query = await pool.query(
-       "SELECT subs.subname, SUM(items.cals) AS totalcals, " +
-                " SUM(items.carbs) AS totalcarbs," +
-                " SUM(items.fat) AS totalfat," +
-                " SUM(items.protein) AS totalprotein," +
-                " SUM(items.na) AS totalna," +
-                " SUM(items.cholesterol) AS totalcholes" +
-            " FROM subs" + 
-                " LEFT JOIN subtoppings ON subs.subid = subtoppings.subid" +  //need to use a left join in case of no toppings
-                " INNER JOIN items ON (subtoppings.toppingid = items.itemid" + 
-                    " OR subs.meatid = items.itemid" + 
-                    " OR subs.cheeseid = items.itemid" +
-                    " OR subs.breadid = items.itemid)" +
-            " WHERE subs.subid = $1" + 
-            " GROUP BY subs.subname", [subid] //need group by to get subname
+        const query = await pool.query( getSubNut, [subid] 
         )
-        console.log(query.rows)
         res.send(query.rows)
     } catch (error) {
         console.log(error)
@@ -277,7 +332,7 @@ app.get('/api/get/sub/:subid', async(req, res) => {
 app.delete('/api/delete/sub/:id', async(req, res) => {
     try {
         const {id} = req.params
-        const query = await pool.query("DELETE FROM subs WHERE subid = $1", [id])
+        const query = await pool.query(deleteFav, [id])
         res.send("sub has been deleted")
     } catch (error) {
         console.error(error)   
