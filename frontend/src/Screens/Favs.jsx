@@ -55,7 +55,11 @@ const Favs = () => {
             <tbody>
               {favs.map((fav) => 
                 <tr key={fav.subid}>
-                  <td>{fav.subname}</td>
+                  <td>
+                    <Link style={{color: 'black'}}
+                      to={`/favs/${fav.subid}`}>
+                      {fav.subname}
+                    </Link></td>
                   <td>
                     <Button style={{color: 'black'}}
                       variant='link'

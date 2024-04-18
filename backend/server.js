@@ -229,10 +229,15 @@ app.get('/get/fav/:email', async (req, res) => {
 app.get('/get/fav/detail/:email', async (req, res) => {
     try {
         const {email} = req.params
-        const query = await pool.query("SELECT * FROM userfavs" + 
-            " INNER JOIN subs ON userfavs.subid = subs.subid" + 
-            " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
-            " INNER JOIN items ON subtoppings.toppingid = items.itemid" +
+        const query = await pool.query("SELECT subs.subname," + 
+                " subtoppings.toppingid," +
+                " subs.subid," +
+                " subs.meatid," +
+                " subs.cheeseid," +
+                " subs.breadid" + 
+            " FROM userfavs" + 
+                " INNER JOIN subs ON userfavs.subid = subs.subid" + 
+                " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
             " WHERE email = $1", [email])
         res.send(query.rows)
     } catch (error) {
@@ -241,14 +246,28 @@ app.get('/get/fav/detail/:email', async (req, res) => {
     }
 })
 
-//get next sub id
-app.get('/api/get/sub/:id', async(req, res) => {
+//get sub nutrition
+app.get('/api/get/sub/:subid', async(req, res) => {
     try {
-        const {id} = req.params
-        const query = await pool.query("SELECT * FROM subs" + 
-            " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
-            " INNER JOIN items ON subtoppings.toppingid = items.itemid")
-        res.send()
+        const {subid} = req.params
+        const query = await pool.query(
+       "SELECT subs.subname, SUM(items.cals) AS totalcals, " +
+                " SUM(items.carbs) AS totalcarbs," +
+                " SUM(items.fat) AS totalfat," +
+                " SUM(items.protein) AS totalprotein," +
+                " SUM(items.na) AS totalna," +
+                " SUM(items.cholesterol) AS totalcholes" +
+            " FROM subs" + 
+                " LEFT JOIN subtoppings ON subs.subid = subtoppings.subid" +  //need to use a left join in case of no toppings
+                " INNER JOIN items ON (subtoppings.toppingid = items.itemid" + 
+                    " OR subs.meatid = items.itemid" + 
+                    " OR subs.cheeseid = items.itemid" +
+                    " OR subs.breadid = items.itemid)" +
+            " WHERE subs.subid = $1" + 
+            " GROUP BY subs.subname", [subid] //need group by to get subname
+        )
+        console.log(query.rows)
+        res.send(query.rows)
     } catch (error) {
         console.log(error)
         res.send(error)

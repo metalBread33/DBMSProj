@@ -17,6 +17,7 @@ import AdminItems from './Screens/Admin/AdminItems'
 import AdminUsers from './Screens/Admin/AdminUsers'
 import AddItem from './Screens/Admin/AddItem'
 import EditItem from './Screens/Admin/EditItem'
+import ViewFav from './Screens/ViewFav'
 
 const router = createBrowserRouter(
     createRoutesFromElements (
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
             <Route path='/item' element={<Items/>}/>
             <Route path='/item/:id' element={<Individual/>}/>
             <Route path='/favs' element={<Favs/>}/>
+            <Route path='/favs/:subid' element={<ViewFav/>}/>
             <Route path='/admin' element={<Admin/>}/>
             <Route path='/admin/items' element={<AdminItems/>}/>
             <Route path='/admin/items/add' element={<AddItem/>}/>
