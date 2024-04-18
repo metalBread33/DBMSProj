@@ -32,8 +32,24 @@ const ViewFav = () => {
             let tCholes = subData.totalcholes
         
             if(subData.doublemeat) {
-              const meatData = await fetch(`http://localhost:5000/api/individual/${subData.meatid}`)
+              const meatData = (await (await fetch(`http://localhost:5000/api/individual/${subData.meatid}`)).json())[0]
+              tCals += meatData.cals
+              tCarbs += meatData.carbs
+              tFat += meatData.fat
+              tProtein += meatData.protein
+              tNa += meatData.na
+              tCholes += meatData.cholesterol
               console.log(meatData);
+            }
+
+            if(subData.doubleCheese) {
+              const cheeseData = (await (await fetch(`http://localhost:5000/api/individual/${subData.cheeseid}`)).json())[0]
+              tCals+= cheeseData.cals
+              tCarbs += cheeseData.carbs
+              tFat += cheeseData.fat 
+              tProtein += cheeseData.protein
+              tNa += cheeseData.na
+              tCholes += cheeseData.cholesterol
             }
             
             if(!subData.whole) {
