@@ -16,7 +16,8 @@ export const getSubNut = "SELECT subs.subname," +
         " SUM(items.fat) AS totalfat," +
         " SUM(items.protein) AS totalprotein," +
         " SUM(items.na) AS totalna," +
-        " SUM(items.cholesterol) AS totalcholes" +
+        " SUM(items.cholesterol) AS totalcholes," + 
+        " subs.whole, subs.doublemeat, subs.doublecheese, subs.meatid, subs.cheeseid" +
     " FROM subs" + 
         //need to use a left join in case of no toppings
         " LEFT JOIN subtoppings ON subs.subid = subtoppings.subid" +  
@@ -25,7 +26,7 @@ export const getSubNut = "SELECT subs.subname," +
                 " OR subs.cheeseid = items.itemid" +
                 " OR subs.breadid = items.itemid)" +
     " WHERE subs.subid = $1" + 
-    " GROUP BY subs.subname" //need group by to get subname
+    " GROUP BY subs.subname, subs.whole, subs.doublemeat, subs.doublecheese, subs.meatid, subs.cheeseid " //need group by to get subname
 
 export const deleteFav = "DELETE FROM subs WHERE subid = $1"
 
