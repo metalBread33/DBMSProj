@@ -217,6 +217,18 @@ app.post('/api/fav', async (req, res) => {
 app.get('/get/fav/:email', async (req, res) => {
     try {
         const {email} = req.params
+        const query = await pool.query("SELECT subs.subid, subs.subname FROM userfavs" + 
+            " INNER JOIN subs ON userfavs.subid = subs.subid WHERE email = $1", [email])
+        res.send(query.rows)
+    } catch (error) {
+        console.error(error)
+        res.send(error)
+    }
+})
+
+app.get('/get/fav/detail/:email', async (req, res) => {
+    try {
+        const {email} = req.params
         const query = await pool.query("SELECT * FROM userfavs" + 
             " INNER JOIN subs ON userfavs.subid = subs.subid" + 
             " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
@@ -230,14 +242,26 @@ app.get('/get/fav/:email', async (req, res) => {
 })
 
 //get next sub id
-app.get('/nextid/sub', async(req, res) => {
+app.get('/api/get/sub/:id', async(req, res) => {
     try {
-        const result = await pool.query("SELECT MAX(subid) FROM subs ")
-        const maxid = result.rows[0].max
-        const nextid = maxid ? maxid+1 : 1
-        res.send(nextid)
+        const {id} = req.params
+        const query = await pool.query("SELECT * FROM subs" + 
+            " INNER JOIN subtoppings ON subs.subid = subtoppings.subid" + 
+            " INNER JOIN items ON subtoppings.toppingid = items.itemid")
+        res.send()
     } catch (error) {
         console.log(error)
+        res.send(error)
+    }
+})
+
+app.delete('/api/delete/sub/:id', async(req, res) => {
+    try {
+        const {id} = req.params
+        const query = await pool.query("DELETE FROM subs WHERE subid = $1", [id])
+        res.send("sub has been deleted")
+    } catch (error) {
+        console.error(error)   
         res.send(error)
     }
 })

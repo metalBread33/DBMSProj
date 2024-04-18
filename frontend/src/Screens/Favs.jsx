@@ -8,6 +8,7 @@ const Favs = () => {
   const auth = useAuth()
   const nav = useNavigate()
   const [favs, setFavs] = useState([])
+  const [updated, setUpdated] = useState(true)
 
   const getFavs = async () => {
     try {
@@ -21,12 +22,23 @@ const Favs = () => {
     }
   }
 
+  const deleteSub = async(id) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/delete/sub/${id}`, {
+        method: "DELETE"
+      })
+      setUpdated(true)
+    } catch (error) {
+     console.error(error) 
+    }
+  }
+
   useEffect(() => {
     if(!auth.user)
       nav('/')
     getFavs()
-    console.log(favs)
-  }, [])
+    setUpdated(false)
+  }, [updated])
   return (
     <>
       <Col>
@@ -54,7 +66,7 @@ const Favs = () => {
                   <td>
                     <Button style={{color: 'black'}}
                       variant='link'
-                      onClick={() => console.log("delete")}>
+                      onClick={() => deleteSub(fav.subid)}>
                         <FaTrash/>
                     </Button>
                   </td>
