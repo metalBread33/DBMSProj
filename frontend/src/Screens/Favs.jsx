@@ -33,12 +33,21 @@ const Favs = () => {
     }
   }
 
+  const editSub = (subid) => {
+    try {
+      nav(`/favs/edit/${subid}`)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     if(!auth.user)
       nav('/')
     getFavs()
     setUpdated(false)
   }, [updated])
+  
   return (
     <>
       <Col>
@@ -63,7 +72,7 @@ const Favs = () => {
                   <td>
                     <Button style={{color: 'black'}}
                       variant='link'
-                      onClick={() => console.log("edit")}>
+                      onClick={() => editSub(fav.subid)}>
                         <FaEdit/>
                     </Button>
                   </td>

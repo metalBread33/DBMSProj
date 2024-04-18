@@ -10,7 +10,8 @@ export const addFav = "INSERT INTO userfavs(subid, email) VALUES ($1, $2)"
 export const getUserFavs = "SELECT subs.subid, subs.subname FROM userfavs" +
     " INNER JOIN subs ON userfavs.subid = subs.subid WHERE email = $1"
 
-export const getSubNut = "SELECT subs.subname, SUM(items.cals) AS totalcals," +
+export const getSubNut = "SELECT subs.subname," + 
+        " SUM(items.cals) AS totalcals," +
         " SUM(items.carbs) AS totalcarbs," +
         " SUM(items.fat) AS totalfat," +
         " SUM(items.protein) AS totalprotein," +
@@ -27,3 +28,25 @@ export const getSubNut = "SELECT subs.subname, SUM(items.cals) AS totalcals," +
     " GROUP BY subs.subname" //need group by to get subname
 
 export const deleteFav = "DELETE FROM subs WHERE subid = $1"
+
+export const getFavToEdit = "SELECT subs.subname, " +
+        "subs.subid, " + 
+        "subs.meatid, " +
+        "subs.cheeseid, " +
+        "subs.breadid, " +
+        "subs.whole, " + 
+        "subs.doublemeat, " +
+        "subs.doublecheese, " +
+        "subtoppings.toppingid, " + 
+        "users.email " + 
+    "FROM subs " +
+        "LEFT JOIN subtoppings ON subs.subid = subtoppings.subid " +
+        "INNER JOIN userfavs ON subs.subid = userfavs.subid " + 
+        "INNER JOIN users ON userfavs.email = users.email " + 
+    "WHERE subs.subid = $1"
+
+export const editFav = "UPDATE subs SET subname = $1, breadid = $2, meatid = $3, " + 
+    "cheeseid = $4, whole = $5, doublemeat = $6, doublecheese = $7 WHERE subid = $8 RETURNING *"
+
+export const clearToppings = "DELETE FROM subtoppings WHERE subid = $1"
+export const editToppings = "UPDATE subtoppings SET toppingid = $1 WHERE subid = $2" 

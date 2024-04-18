@@ -14,21 +14,26 @@ import {
     deleteItem,
     nextItemId
 } from './queries/ItemQueries.js'
+
 import {
     deleteUser,
     getAllUsers,
     getUser,
     registerUser
 } from './queries/UserQueries.js'
+
 import {
     addFav,
     addSub,
     addToppingsToSub,
+    clearToppings,
     deleteFav,
+    editFav,
+    editToppings,
+    getFavToEdit,
     getSubNut,
     getUserFavs
 } from './queries/FavQueries.js'
-
 
 const port = 5000;
 
@@ -340,5 +345,54 @@ app.delete('/api/delete/sub/:id', async(req, res) => {
     }
 })
 
+app.get('/api/get/update/sub/:subid', async (req, res) => {
+    try {
+        const {subid} = req.params
+        const query = await pool.query(getFavToEdit, [subid])
+        res.send(query.rows)
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+    }
+})
+
+app.put('/api/update/sub', async (req, res) => {
+    try {
+        const {
+            subid, 
+            subname, 
+            breadid, 
+            meatid, 
+            cheeseid, 
+            doublemeat, 
+            doublecheese, 
+            whole, 
+            toppings
+        } = req.body
+
+        const query = await pool.query(editFav, [
+            subname,
+            breadid,
+            meatid,
+            cheeseid,
+            whole,
+            doublemeat,
+            doublecheese,
+            subid
+        ])
+
+        await pool.query(clearToppings, [subid])
+
+        toppings.forEach(async (topping) => {
+            await pool.query(editToppings, [topping.itemid, subid])
+        })
+
+        res.send(query)
+        
+    } catch (error) {
+        console.error(error)
+        res.send(error)
+    }
+})
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
