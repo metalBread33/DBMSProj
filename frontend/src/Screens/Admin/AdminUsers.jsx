@@ -3,6 +3,7 @@ import { Row, Col, Form, InputGroup, Table, Button } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../Components/Auth'
 import { FaEdit, FaTrash, FaPlus} from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 
 const AdminItems = () => {
@@ -38,6 +39,8 @@ const AdminItems = () => {
           {
             method: "DELETE"
           })
+
+          toast.success("User deleted")
           
           return response
         } catch (error) {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {Row, Col, Button, Form} from "react-bootstrap"
 import { useAuth } from '../Components/Auth'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Sub = () => {
     const [toppings, setToppings] = useState([])
@@ -193,6 +194,7 @@ const Sub = () => {
           body: JSON.stringify(body)
         })
         console.log(response)
+        toast.success("Sub added")
         nav('/favs')
       } catch (error) {
         console.error(error)

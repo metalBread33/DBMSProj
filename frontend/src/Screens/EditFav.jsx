@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import { useAuth } from '../Components/Auth'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const EditFav = () => {
     const auth = useAuth()
@@ -209,6 +210,7 @@ useEffect(() => {
         body: JSON.stringify(body)
  })
       console.log(response)
+      toast.success("Item edited")
         nav('/favs')
     } catch (error) {
       console.error(error)

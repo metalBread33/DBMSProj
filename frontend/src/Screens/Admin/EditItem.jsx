@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useAuth } from '../../Components/Auth'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const EditItem = () => {
     const auth = useAuth()
@@ -64,6 +65,7 @@ const EditItem = () => {
     const submit = async(e) => {
         e.preventDefault()
         await update()
+        toast.success("Item edited")
         nav('/admin/items') 
     }
   return (

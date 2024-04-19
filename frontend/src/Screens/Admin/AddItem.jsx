@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useAuth } from '../../Components/Auth'
 import { Form, Row, Col, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const AddItem = () => {
     const auth = useAuth()
@@ -43,6 +44,7 @@ const AddItem = () => {
     const submit = async(e) => {
         e.preventDefault()
        await postData()
+       toast.success("Item added")
        nav('/admin/items') 
     }
   return (

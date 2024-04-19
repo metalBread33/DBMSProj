@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Row, Col, Button, Form } from 'react-bootstrap'
 import { useAuth } from '../Components/Auth'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 const Register = () => {
@@ -42,7 +43,9 @@ const Register = () => {
       const foundUser = await fetchData()
       if(foundUser){
         console.log("User already exists")
+        toast.error("User already exists")
       } else if(password2 !== password){
+        toast.error("Passwords do not match")
         console.log("passwords dont match")
       } else {
         const data = await postData()

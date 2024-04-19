@@ -3,6 +3,7 @@ import { Row, Col, Form, InputGroup, Table, Button } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../Components/Auth'
 import { FaEdit, FaTrash, FaPlus} from 'react-icons/fa'
+import { toast } from 'react-toastify'
 
 const Favs = () => {
   const auth = useAuth()
@@ -28,8 +29,9 @@ const Favs = () => {
         method: "DELETE"
       })
       setUpdated(true)
+      toast.success("Item deleted")
     } catch (error) {
-     console.error(error) 
+     toast.error(error) 
     }
   }
 
