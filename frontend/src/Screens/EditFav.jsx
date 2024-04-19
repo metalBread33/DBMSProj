@@ -195,7 +195,6 @@ useEffect(() => {
 
   const updateFav = async () => {
     try {
-     // const email = auth.user.email 
       const breadid = selectedBread.itemid
       const meatid = selectedKit.itemid
       const cheeseid = selectedCheese.itemid

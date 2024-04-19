@@ -3,6 +3,7 @@ import { Row, Col, Button, Form } from 'react-bootstrap'
 import { useAuth } from '../Components/Auth'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const [email, setEmail] = useState('')
@@ -26,8 +27,10 @@ const Login = () => {
     const foundUser = await fetchData()
     if(!foundUser){
       console.log("no user found")
+      toast.error("Wrong username or password")
     } else if(foundUser.password !== password){
-      console.log("passwords dont match")
+      toast.error("Wrong username or password")
+      //console.log("passwords dont match")
     } else {
       auth.login(foundUser)
       nav('/')
