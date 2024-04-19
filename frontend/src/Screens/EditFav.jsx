@@ -210,7 +210,7 @@ useEffect(() => {
         body: JSON.stringify(body)
  })
       console.log(response)
-      return response
+        nav('/favs')
     } catch (error) {
       console.error(error)
     }

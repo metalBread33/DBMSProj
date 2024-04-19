@@ -15,14 +15,18 @@ const ViewFav = () => {
     const [na, setNa] = useState(0)
     const [cholesterol, setCholes] = useState(0)
     const [subname, setSubName] = useState("")
+    const [doubleCheese, setDoubCheese] = useState()
+    const [doublemeat, setDoubMeat] = useState()
+
 
     const getSub = async() => {
         try {
             const response = await fetch(`http://localhost:5000/api/get/sub/${subid}`)
             const data = await response.json()
-            let subData = data[0]
-            console.log(subData);
+            const subData = data[0]
             setSubName(subData.subname)
+            setDoubCheese(subData.doublecheese)
+            setDoubMeat(subData.doublemeat)
 
             let tCals = subData.totalcals
             let tCarbs = subData.totalcarbs
@@ -31,7 +35,7 @@ const ViewFav = () => {
             let tNa = subData.totalna
             let tCholes = subData.totalcholes
         
-            if(subData.doublemeat) {
+            if(doublemeat) {
               const meatData = (await (await fetch(`http://localhost:5000/api/individual/${subData.meatid}`)).json())[0]
               tCals += meatData.cals
               tCarbs += meatData.carbs
@@ -39,11 +43,11 @@ const ViewFav = () => {
               tProtein += meatData.protein
               tNa += meatData.na
               tCholes += meatData.cholesterol
-              console.log(meatData);
             }
 
-            if(subData.doubleCheese) {
-              const cheeseData = (await (await fetch(`http://localhost:5000/api/individual/${subData.cheeseid}`)).json())[0]
+            if(doubleCheese) {
+              const res = (await (await fetch(`http://localhost:5000/api/individual/${subData.cheeseid}`)).json())
+              const cheeseData = res[0]
               tCals+= cheeseData.cals
               tCarbs += cheeseData.carbs
               tFat += cheeseData.fat 
@@ -57,16 +61,16 @@ const ViewFav = () => {
               setCarbs(tCarbs/2)
               setFat(tFat/2)
               setProtein(tProtein/2)
-              setProtein(tNa/2)
-              setProtein(tCholes/2)
+              setNa(tNa/2)
+              setCholes(tCholes/2)
             } 
             else {
               setCals(tCals)
               setCarbs(tCarbs)
               setFat(tFat)
               setProtein(tProtein)
-              setProtein(tNa)
-              setProtein(tCholes)
+              setNa(tNa)
+              setCholes(tCholes)
             }
 
         } catch (error) {
@@ -81,7 +85,7 @@ const ViewFav = () => {
         getSub()
 
                 
-    }, [])
+    }, [cholesterol])
   return (
     <div>
       <h1 style={{textAlign: 'center'}}>{subname}</h1>

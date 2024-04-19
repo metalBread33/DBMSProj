@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {Row, Col, Button, Form} from "react-bootstrap"
 import { useAuth } from '../Components/Auth'
+import { useNavigate } from 'react-router-dom'
 
 const Sub = () => {
     const [toppings, setToppings] = useState([])
@@ -22,6 +23,7 @@ const Sub = () => {
     const [totalCholes, setTotalCholes] = useState(0)
     const [subname, setSubName] = useState("My favorite sub")
     const auth = useAuth()
+    const nav = useNavigate()
 
 
     const fetchData = async () => {
@@ -191,7 +193,7 @@ const Sub = () => {
           body: JSON.stringify(body)
         })
         console.log(response)
-        return response
+        nav('/favs')
       } catch (error) {
         console.error(error)
       }
