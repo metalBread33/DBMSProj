@@ -78,7 +78,7 @@ VALUES
     (201, 'Chicken Bacon Ranch Tender Sub', 1, 1750, 56, 127, 97, 2760, 305, FALSE);
 
 --inserts dummy users
-INSERT INTO users (email, userName, admin, password, fav)
+INSERT INTO users (email, userName, admin, password)
 VALUES 
-    ('admin@email.com', 'admin', TRUE, '123456', null),
-    ('email@email.com', 'user', FALSE, '123456', null);
+    ('admin@email.com', 'admin', TRUE, '123456'),
+    ('email@email.com', 'user', FALSE, '123456');

@@ -32,7 +32,6 @@ CREATE TABLE users (
     userName VARCHAR(64),
     admin BOOLEAN,
     password VARCHAR(255),
-    FOREIGN KEY (fav) REFERENCES subs
 );
 
 --table used to track what toppings go on a sub
